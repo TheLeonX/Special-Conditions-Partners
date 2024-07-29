@@ -1,0 +1,14 @@
+﻿  condition.cpp
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(141,41): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(166,63): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(197,41): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(315,59): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(383,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\condition.cpp(384,46): warning C4244: аргумент: преобразование "__int64" в "unsigned int", возможна потеря данных
+     Создается библиотека E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\x64\Release\API Plugin.lib и объект E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\x64\Release\API Plugin.exp
+  Создание кода
+  2 of 629 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  API Plugin.vcxproj -> E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\x64\Release\API Plugin.dll
