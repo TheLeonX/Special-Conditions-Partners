@@ -23,6 +23,7 @@
     <ProjectGuid>{0BA65DB4-F64C-469A-B708-6D722D7D60F4}</ProjectGuid>
     <RootNamespace>APIPlugin</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Conditions</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -70,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\Thirdparty\lib;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Desktop\Projects\Enhanced-Plugin-Template-Special-Conditions-Partners\API Plugin\Thirdparty\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\API Plugin\Thirdparty\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>..\API Plugin\Thirdparty\lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,6 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

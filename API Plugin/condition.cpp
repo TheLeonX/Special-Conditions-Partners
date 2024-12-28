@@ -289,6 +289,7 @@ void condition::ReadSpecialConditionParam(std::string _file)
 		else if (slotType == "COND_BKRL") condFunct = 0x8C;
 		else if (slotType == "COND_9ISH") condFunct = 0x114;
 		else if (slotType == "COND_9KRN") condFunct = 0x115;
+		else if (slotType == "COND_9BRM") condFunct = 0x117;
 		else if (slotType == "COND_BSSN") condFunct = 0x8D;
 		else if (slotType == "COND_BOBT") condFunct = 0x8E;
 		else if (slotType == "COND_BKRS") condFunct = 0x9B;
@@ -439,94 +440,3 @@ __int64 condition::Motion_cancel_function(int* a1)
 
 
 
-__int64 __fastcall condition::CancelActionFunction(__int64 a1, __int64 a2)
-{
-	__int64 result; // rax 
-
-
-	// change 73712 value with update
-	switch (*(int*)(a2 + 36))
-	{
-	case 0:
-		*(int*)(a1 + 73712) = 1;
-		result = 1i64;
-		break;
-	case 1:
-		*(int*)(a1 + 73712) = 2; //JUMP CANCEL
-		result = 1i64;
-		break;
-	case 2:
-		*(int*)(a1 + 73712) = 4;
-		result = 1i64;
-		break;
-	case 3:
-		*(int*)(a1 + 73712) = 8; //DASH CANCEL
-		result = 1i64;
-		break;
-	case 4:
-		*(int*)(a1 + 73712) = 16; // COMBO CANCEL
-		result = 1i64;
-		break;
-	case 5:
-		*(int*)(a1 + 73712) = 32; // GRAB CANCEL
-		result = 1i64;
-		break;
-	case 6:
-		*(int*)(a1 + 73712) = 64; //JUTSU CANCEL
-		result = 1i64;
-		break;
-	case 7:
-		*(int*)(a1 + 73712) = 128;
-		result = 1i64;
-		break;
-	case 8:
-		*(int*)(a1 + 73712) = 256; //ULTIMATE JUTSU CANCEL
-		result = 1i64;
-		break;
-	case 9:
-		*(int*)(a1 + 73712) = 15; //WALK
-		result = 1i64;
-		break;
-	case 0xA:
-		*(int*)(a1 + 73712) = 208; //JUTSU, COMBO CANCEL
-		result = 1i64;
-		break;
-	case 0xB:
-		*(int*)(a1 + 73712) = 192;
-		result = 1i64;
-		break;
-	case 0xC:
-		*(int*)(a1 + 73712) = -1; //ALL CANCEL
-		result = 1i64;
-		break;
-	case 0xD:
-		*(int*)(a1 + 73712) = 512;
-		result = 1i64;
-		break;
-	case 0xE:
-		*(int*)(a1 + 73712) = 1024; //SHURIKEN CANCEL
-		result = 1i64;
-		break;
-	case 0xF:
-		*(int*)(a1 + 73712) = -1030; //COMBO, JUTSU, ULTIMATE, JUMP, GRAB, DASH
-		result = 1i64;
-		break;
-	case 0x10:
-		*(int*)(a1 + 73712) = -22; // SHURIKEN, JUTSU, ULTIMATE, JUMP, GRAB, DASH
-		result = 1i64;
-		break;
-	case 0x11:
-		*(int*)(a1 + 73712) = 1120; // GRAB, SHURIKEN, JUTSU
-		result = 1i64;
-		break;
-	case 0x12:
-		*(int*)(a1 + 73712) = -6; //COMBO, JUTSU, ULTIMATE, JUMP, SHURIKEN, GRAB, DASH
-		result = 1i64;
-		break;
-	default:
-		*(int*)(a1 + 73712) = 0;
-		result = 1i64;
-		break;
-	}
-	return result;
-}

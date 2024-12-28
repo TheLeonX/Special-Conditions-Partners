@@ -4,6 +4,7 @@ extern __int64 datasection;
 
 extern int PluginState;
 #include "Main.h"
+#include <widemath.h>
 
 class Common
 {
@@ -19,10 +20,14 @@ public:
 		return *(__int64*)(plugin::moduleBase + qwr);
 	}
 
-	static __int64* GetXmmword(__int64* qw)
-	{
-		__int64* qwr = qw - 0x140000000;
-		return *(__int64**)(plugin::moduleBase + qwr);
+	struct Xmmword {
+		__int64 low;  // Нижние 64 бита
+		__int64 high; // Верхние 64 бита
+	};
+
+	static __int64* GetXmmword(__int64 addr) {
+		__int64 offset = addr - 0x140000000;
+		return *(__int64**)(plugin::moduleBase + offset);
 	}
 
 	// Get a DWORD pointer from the game

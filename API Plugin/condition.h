@@ -51,7 +51,6 @@ public:
 	static int __fastcall NoClipCursor(__int64 a1);
 	static int __fastcall EnableUpgradeCancel(int* a1);
 	static __int64 __fastcall UpgradeVerUnlocker(__int64 a1, __int64 a2);
-	static __int64 __fastcall CancelActionFunction(__int64 a1, __int64 a2);
 	static __int64 Motion_cancel_function(int* a1);
 };
 
