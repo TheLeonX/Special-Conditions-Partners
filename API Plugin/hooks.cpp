@@ -249,6 +249,93 @@ void plugin::hookall() {
 		//cout << char17Adress << endl;
 		util::memory::mem::write_bytes(char17Adress + 2, charBytes6);
 	}
+
+	//Increase Memory Limits sub_140605050 (1.50)
+	__int64 MemoryLimitAddress = PatternScan::Scan("48xxxxxxxx5748xxxxxxE8xxxxxxxxC7xxxxxxxxxxxxE8xxxxxxxx48xxxxBAxxxxxxxxE8xxxxxxxxE8xxxxxxxx");
+	if (MotionBlurAdress > 1) {
+		cout << "MemoryLimitExpand :: Memory Increase Start" << endl;
+		__int64 MemoryLimit1Address = PatternScan::Scan("48xxxxxxxxxxxx0000A000", MemoryLimitAddress);
+		const std::array<std::uint8_t, 4> MemoryLimitBytes1{ 0x00, 0x00, 0x40, 0x01 };
+		util::memory::mem::write_bytes(MemoryLimit1Address + 7, MemoryLimitBytes1);
+		cout << "MemoryLimitExpand :: Memory Increase 1 " << MemoryLimit1Address << endl;
+
+
+		__int64 MemoryLimit2Address = PatternScan::Scan("41xx0000A000", MemoryLimit1Address);
+		const std::array<std::uint8_t, 4> MemoryLimitBytes2{ 0x00, 0x00, 0x40, 0x01 };
+		util::memory::mem::write_bytes(MemoryLimit2Address + 2, MemoryLimitBytes2);
+		cout << "MemoryLimitExpand :: Memory Increase 2 " << MemoryLimit2Address << endl;
+
+
+		__int64 MemoryLimit3Address = PatternScan::Scan("41xx00000019", MemoryLimit2Address); //App 400MB -> 800MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes3{ 0x00, 0x00, 0x00, 0x32 };
+		util::memory::mem::write_bytes(MemoryLimit3Address + 2, MemoryLimitBytes3);
+		cout << "MemoryLimitExpand :: Memory Increase 3 " << MemoryLimit3Address << endl;
+
+
+		__int64 MemoryLimit4Address = PatternScan::Scan("41xx0000E015", MemoryLimit3Address); //UI 350MB -> 700MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes4{ 0x00, 0x00, 0xC0, 0x2B };
+		util::memory::mem::write_bytes(MemoryLimit4Address + 2, MemoryLimitBytes4);
+		cout << "MemoryLimitExpand :: Memory Increase 4 " << MemoryLimit4Address << endl;
+
+
+		__int64 MemoryLimit5Address = PatternScan::Scan("48xxxxxxxx0000A000", MemoryLimit4Address); //Param 10MB -> 20MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes5{ 0x00, 0x00, 0x40, 0x01 };
+		util::memory::mem::write_bytes(MemoryLimit5Address + 5, MemoryLimitBytes5);
+		cout << "MemoryLimitExpand :: Memory Increase 5 " << MemoryLimit5Address << endl;
+
+
+		__int64 MemoryLimit6Address = PatternScan::Scan("48xxxxxxxx0000A000", MemoryLimit5Address); //Skill 10MB -> 20MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes6{ 0x00, 0x00, 0x40, 0x01 };
+		util::memory::mem::write_bytes(MemoryLimit6Address + 5, MemoryLimitBytes6);
+		cout << "MemoryLimitExpand :: Memory Increase 6 " << MemoryLimit6Address << endl;
+
+
+		__int64 MemoryLimit7Address = PatternScan::Scan("41xx00002003", MemoryLimit6Address); //Texture 50MB -> 300MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes7{ 0x00, 0x00, 0xC0, 0x12 };
+		util::memory::mem::write_bytes(MemoryLimit7Address + 2, MemoryLimitBytes7);
+		cout << "MemoryLimitExpand :: Memory Increase 7 " << MemoryLimit7Address << endl;
+
+
+		__int64 MemoryLimit8Address = PatternScan::Scan("41xx0000E001", MemoryLimit7Address); //Sound 30MB -> 60MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes8{ 0x00, 0x00, 0xC0, 0x03 };
+		util::memory::mem::write_bytes(MemoryLimit8Address + 2, MemoryLimitBytes8);
+		cout << "MemoryLimitExpand :: Memory Increase 8 " << MemoryLimit8Address << endl;
+
+
+		__int64 MemoryLimit9Address = PatternScan::Scan("41xx00009001", MemoryLimit8Address); //S_Texture 25MB -> 50MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes9{ 0x00, 0x00, 0x20, 0x03 };
+		util::memory::mem::write_bytes(MemoryLimit9Address + 2, MemoryLimitBytes9);
+		cout << "MemoryLimitExpand :: Memory Increase 9 " << MemoryLimit9Address << endl;
+
+
+		__int64 MemoryLimit10Address = PatternScan::Scan("41xx00002003", MemoryLimit9Address); //Stage 50MB -> 200MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes10{ 0x00, 0x00, 0x80, 0x0C };
+		util::memory::mem::write_bytes(MemoryLimit10Address + 2, MemoryLimitBytes10);
+		cout << "MemoryLimitExpand :: Memory Increase 10 " << MemoryLimit10Address << endl;
+
+
+
+		__int64 MemoryLimit11Address = PatternScan::Scan("41xx00004001", MemoryLimit10Address); //StageSub 20MB -> 40MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes11{ 0x00, 0x00, 0x80, 0x02 };
+		util::memory::mem::write_bytes(MemoryLimit11Address + 2, MemoryLimitBytes11);
+		cout << "MemoryLimitExpand :: Memory Increase 11 " << MemoryLimit11Address << endl;
+
+
+		__int64 MemoryLimit12Address = PatternScan::Scan("41xx0000E001", MemoryLimit11Address); //Player 30MB -> 60MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes12{ 0x00, 0x00, 0xC0, 0x03 };
+		util::memory::mem::write_bytes(MemoryLimit12Address + 2, MemoryLimitBytes12);
+		cout << "MemoryLimitExpand :: Memory Increase 12 " << MemoryLimit12Address << endl;
+
+		__int64 MemoryLimit13Address = PatternScan::Scan("41xx0000E015", MemoryLimit12Address); //Resident 350MB -> 700MB
+		const std::array<std::uint8_t, 4> MemoryLimitBytes13{ 0x00, 0x00, 0xC0, 0x2B };
+		util::memory::mem::write_bytes(MemoryLimit13Address + 2, MemoryLimitBytes13);
+		cout << "MemoryLimitExpand :: Memory Increase 13 " << MemoryLimit13Address << endl;
+		cout << "MemoryLimitExpand :: Memory Increase Complete!" << endl;
+
+	}
+
+
+
 }
 
 
