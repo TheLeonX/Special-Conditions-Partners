@@ -438,5 +438,3 @@ __int64 condition::Motion_cancel_function(int* a1)
 	return 1i64;
 }
 
-
-

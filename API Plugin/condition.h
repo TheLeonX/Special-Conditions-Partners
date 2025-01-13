@@ -53,4 +53,3 @@ public:
 	static __int64 __fastcall UpgradeVerUnlocker(__int64 a1, __int64 a2);
 	static __int64 Motion_cancel_function(int* a1);
 };
-

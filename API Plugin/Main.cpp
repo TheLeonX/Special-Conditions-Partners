@@ -39,6 +39,7 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
 		condition::ReadPartnerSlotParam(e + "partnerSlotParam.xfbin");
 	}
 
+
 }
 
 // This function adds commands to the API's console.

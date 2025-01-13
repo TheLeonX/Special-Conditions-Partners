@@ -13,6 +13,9 @@
 #include <string>
 #include <format>
 #include "Common.h"
+
+#include <thread>
+#include <chrono>
 using namespace std;
 
 
@@ -24,9 +27,20 @@ __int64 stageOffset = 0x14218C5E0; //get that id from kaguya's screen stage swit
 int prevFrame = 0;
 int prevBattle = 0;
 
+uintptr_t me_FindHealthPointer(int characterId, int playerSide);
 void me_EnemyDispOff(__int64 p);
 void me_PlayBGM(int snd);
 void me_test_switch_stage(__int64 function_param, __int64 a2, char* string_param, __int64 a1);
+void me_character_param(__int64 p);
+void me_change_skill(__int64 p, int jutsu, int index);
+void me_change_speed(__int64 p, int enemy, float speed);
+void me_change_speed_timed(__int64 char_p, int enemy, float speed, int duration_ms);
+void me_play_blur (__int64 p);
+void me_change_fov(__int64 p, float fov);
+void me_change_walk_speed(__int64 p, float speed);
+void me_change_jump_height(__int64 p, float jump_h);
+void me_SetPlayerParam(__int64 s, int param2, float value);
+void me_ChangePlayerParam(__int64 s, int param2, float value);
 int crc32(const std::string& input);
 
 __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
@@ -42,6 +56,20 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 	std::strncpy(string_param, reinterpret_cast<const char*>(a2), 30);
 	string_param[30] = '\0'; // Ensure null termination
 
+	__int64 enemy_pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	enemy_pointer = sub_1409B9FB0_f(a1);
+	int side = 0;
+	if (a1 < enemy_pointer)
+	{
+		side = 0; // Player 1 (left side)
+	}
+	else if (a1 > enemy_pointer)
+	{
+		side = 1; // Player 2 (right side)
+	}
+
 	switch (param1)
 	{
 		default:
@@ -52,6 +80,36 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 			break;
 		case 2:
 			me_test_switch_stage(a2, param2, string_param, a1);
+			break;
+		case 3:
+			me_change_skill(a1, param2, param3);
+			break;
+		case 4:
+			me_change_speed(a1, param2, param4);
+			break;
+		case 5:
+			me_change_speed_timed(a1, param2, param4, param3 * (1000/30));
+			break;
+		case 6:
+			me_play_blur(a1);
+			break;
+		case 7:
+			me_change_fov(a1, param4);
+			break;
+		case 8:
+			me_change_walk_speed(a1, param4);
+			break;
+		case 9:
+			me_change_jump_height(a1, param4);
+			break;
+		case 10:
+			me_SetPlayerParam(me_FindHealthPointer(param3, side), param2, param4);
+			break;
+		case 11:
+			me_ChangePlayerParam(me_FindHealthPointer(param3, side), param2, param4);
+			break;
+		case 12:
+			me_character_param(a1);
 			break;
 	}
 
@@ -67,6 +125,243 @@ void me_EnemyDispOff(__int64 a1)
 
 
 }
+
+#include <cstdint>
+
+uintptr_t me_FindHealthPointer(int characterId, int playerSide)
+{
+	uintptr_t* p1 = nullptr;
+	uintptr_t* p2 = nullptr;
+	uintptr_t* p3 = nullptr;
+	uintptr_t* p4 = nullptr;
+	uintptr_t* p5 = nullptr;
+	uintptr_t* p6 = nullptr;
+
+	// Base address for the module
+	p1 = (uintptr_t*)(plugin::moduleBase + 0x0219A628);
+	if (p1 == nullptr || *p1 == 0) return 0;
+
+	// Offset 0 (Player or Enemy selection based on playerSide)
+	if (playerSide == 0) // Player 1 (left side)
+	{
+		p2 = (uintptr_t*)(*p1 + (characterId == 0 ? 0x80 : 0x88)); // Player or Enemy
+	}
+	else if (playerSide == 1) // Player 2 (right side)
+	{
+		p2 = (uintptr_t*)(*p1 + (characterId == 0 ? 0x88 : 0x80)); // Swap Player/Enemy for right side
+	}
+	else
+	{
+		std::cerr << "Invalid playerSide. Use 0 for Player 1 (left), 1 for Player 2 (right)." << std::endl;
+		return 0;
+	}
+	if (p2 == nullptr || *p2 == 0) return 0;
+
+	// Offset 1
+	p3 = (uintptr_t*)(*p2 + 0xB8);
+	if (p3 == nullptr || *p3 == 0) return 0;
+
+	// Offset 2
+	p4 = (uintptr_t*)(*p3 + 0xC0);
+	if (p4 == nullptr || *p4 == 0) return 0;
+
+	// Offset 3 (Player or Enemy specific)
+	if (playerSide == 0) // Player 1 (left side)
+	{
+		p5 = (uintptr_t*)(*p4 + (characterId == 0 ? 0x10 : 0x88)); // Player or Enemy
+	}
+	else if (playerSide == 1) // Player 2 (right side)
+	{
+		p5 = (uintptr_t*)(*p4 + (characterId == 0 ? 0x88 : 0x10)); // Swap Player/Enemy for right side
+	}
+	if (p5 == nullptr || *p5 == 0) return 0;
+
+	// Offset 4
+	p6 = (uintptr_t*)(*p5 + 0x38);
+	if (p6 == nullptr || *p6 == 0) return 0;
+
+	// Debug output
+	std::cout << "Health Pointer for CharacterId " << characterId << " on Side " << playerSide << ": " << p6 << std::endl;
+	std::cout << "Health Value: " << *p6 << std::endl;
+
+	return (uintptr_t)p6;
+}
+
+
+#include <cmath> // For fabs (absolute value for floats)
+
+void me_SetPlayerParam(__int64 s, int param2, float value)
+{
+	const float EPSILON = 0.0001f; // Small value to account for floating-point precision errors
+	float new_val = 0.0f;
+
+	switch (param2)
+	{
+	case 0: // health
+		if (*(float*)(s + 0x00) + value > *(float*)(s + 0x04) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x00) + value) - *(float*)(s + 0x04);
+		}
+		*(float*)(s + 0x00) = value - new_val;
+		break;
+
+	case 1: // maxhealth
+		*(float*)(s + 0x04) = value;
+		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), value); // Ensure current health <= max health
+		break;
+
+	case 2: // chakra
+		if (*(float*)(s + 0x08) + value > *(float*)(s + 0x0C) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x08) + value) - *(float*)(s + 0x0C);
+		}
+		*(float*)(s + 0x08) = value - new_val;
+		break;
+
+	case 3: // maxchakra
+		*(float*)(s + 0x0C) = value;
+		*(float*)(s + 0x08) = min(*(float*)(s + 0x08), value);
+		break;
+
+	case 4: // sub
+		if (*(float*)(s + 0x10) + value > *(float*)(s + 0x14) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x10) + value) - *(float*)(s + 0x14);
+		}
+		*(float*)(s + 0x10) = value - new_val;
+		break;
+
+	case 5: // maxsub
+		*(float*)(s + 0x14) = value;
+		*(float*)(s + 0x10) = min(*(float*)(s + 0x10), value);
+		break;
+	}
+}
+
+void me_ChangePlayerParam(__int64 s, int param2, float value)
+{
+	const float EPSILON = 0.0001f; // Small value to account for floating-point precision errors
+	float new_val = 0.0f;
+
+	switch (param2)
+	{
+	case 0: // health
+		if (*(float*)(s + 0x00) + value > *(float*)(s + 0x04) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x00) + value) - *(float*)(s + 0x04);
+		}
+		*(float*)(s + 0x00) += value - new_val;
+		break;
+
+	case 1: // maxhealth
+		*(float*)(s + 0x04) += value;
+		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), *(float*)(s + 0x04)); // Ensure current health <= max health
+		break;
+
+	case 2: // chakra
+		if (*(float*)(s + 0x08) + value > *(float*)(s + 0x0C) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x08) + value) - *(float*)(s + 0x0C);
+		}
+		*(float*)(s + 0x08) += value - new_val;
+		break;
+
+	case 3: // maxchakra
+		*(float*)(s + 0x0C) += value;
+		*(float*)(s + 0x08) = min(*(float*)(s + 0x08), *(float*)(s + 0x0C));
+		break;
+
+	case 4: // sub
+		if (*(float*)(s + 0x10) + value > *(float*)(s + 0x14) + EPSILON)
+		{
+			new_val = (*(float*)(s + 0x10) + value) - *(float*)(s + 0x14);
+		}
+		*(float*)(s + 0x10) += value - new_val;
+		break;
+
+	case 5: // maxsub
+		*(float*)(s + 0x14) += value;
+		*(float*)(s + 0x10) = min(*(float*)(s + 0x10), *(float*)(s + 0x14));
+		break;
+	}
+}
+
+
+void me_change_skill(__int64 char_p, int jutsu, int index) {
+	if (index > -1 && index <= 6) {
+		if (jutsu == 0) {
+
+			*(int*)(char_p + 0xE74) = index; //Jutsu 1
+		}
+		else if (jutsu == 1) {
+
+			*(int*)(char_p + 0xE78) = index; //Jutsu 2
+		}
+		else if (jutsu == 2) {
+
+			*(int*)(char_p + 0xE7C) = index; // Ultimate Jutsu
+		}
+	}
+	
+}
+void me_play_blur(__int64 p) {
+	*(int*)(p + 72072) = 1;
+
+}
+void me_change_fov(__int64 p, float FOV) {
+	if (FOV > 0)
+		*(float*)(p + 72080) = FOV;
+	else
+		*(float*)(p + 72080) = -1;
+
+}
+
+void me_change_walk_speed(__int64 p, float speed) {
+	*(float*)(p + 68916) = speed;
+}
+void me_change_jump_height(__int64 p, float jump_h) {
+	*(float*)(p + 68908) = jump_h;
+}
+void me_change_speed(__int64 char_p, int enemy, float speed) {
+	__int64 enemy_pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	enemy_pointer = sub_1409B9FB0_f(char_p);
+	if (enemy == 0) {
+
+		*(float*)(char_p + 0x214) = speed; //Player
+	}
+	else if (enemy == 1) {
+
+		*(float*)(enemy_pointer + 0x214) = speed; //Enemy
+	}
+}
+
+void me_change_speed_timed(__int64 char_p, int enemy, float speed, int duration_ms) {
+	__int64 enemy_pointer;
+	typedef signed __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress);
+
+	// Get Enemy Pointer
+	enemy_pointer = sub_1409B9FB0_f(char_p);
+
+	// Save the original speed
+	float* target_speed_ptr = (enemy == 0) ? (float*)(char_p + 0x214) : (float*)(enemy_pointer + 0x214);
+	float original_speed = *target_speed_ptr;
+
+	// Set the new speed
+	*target_speed_ptr = speed;
+
+	// Start a new thread to reset speed after the duration
+	std::thread([=]() {
+		// Wait for the specified duration
+		std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
+
+		// Reset the speed back to the original value
+		*target_speed_ptr = 1.0f;
+		}).detach(); // Detach the thread to run independently
+}
+
 
 __int64 MovesetPlus::OriginalStageAddress = 0;
 __int64 MovesetPlus::HandleStageChangeAddress = 0;
@@ -91,22 +386,27 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 	typedef void(__fastcall* Sub_1406F6830)(__int64, unsigned int);
 	Sub_1406F6830 sub_1406F6830_f = (Sub_1406F6830)(MovesetPlus::SpecificStageHandlerAddress);
 
-	enemy_pointer = sub_1409B9FB0_f(character_pointer);
-	if (*(int*)(character_pointer + 0xE68) == 0) {
 
-		*(int*)(character_pointer + 0xE68) = *(int*)(Common::GetQword(stageOffset) + 8);
-		*(int*)(enemy_pointer + 0xE68) = *(int*)(Common::GetQword(stageOffset) + 8);
+	
+
+
+
+	enemy_pointer = sub_1409B9FB0_f(character_pointer);
+	if (*(int*)(character_pointer + 0xEF4) == 0) {
+
+		*(int*)(character_pointer + 0xEF4) = *(int*)(Common::GetQword(stageOffset) + 8);
+		*(int*)(enemy_pointer + 0xEF4) = *(int*)(Common::GetQword(stageOffset) + 8);
 	}
 	if (param2 == 0) {
 		sub_1406F6830_f(Common::GetQword(stageOffset) + 8, crc32((std::string)string_param)); // Specific stage handler << endl;
 	}
 	else {
-		sub_1406F6830_f(Common::GetQword(stageOffset) + 8, *(int*)(character_pointer + 0xE68)); // Specific stage handler
+		sub_1406F6830_f(Common::GetQword(stageOffset) + 8, *(int*)(character_pointer + 0xEF4)); // Specific stage handler
 	}
 
 
-	cout << "Original Stage1: " << *(int*)(character_pointer + 0xE68) << endl;
-	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xE68) << endl;
+	cout << "Original Stage1: " << *(int*)(character_pointer + 0xEF4) << endl;
+	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xEF4) << endl;
 	cout << "Hash Stage: " << *(int*)(Common::GetQword(stageOffset) + 8) << endl;
 
 	sub_1408EAE00_f(*(int*)(Common::GetQword(stageOffset) + 8));
@@ -300,6 +600,12 @@ __int64 __fastcall MovesetPlus::CancelActionFunction(__int64 a1, __int64 a2)
 	}
 	return result;
 }
+
+void me_character_param(__int64 char_p) {
+	cout << (char_p) << endl;
+	cout << (char_p + 0xE64) << endl;
+}
+
 
 std::vector<int> crc32_table() {
 	std::vector<int> table(256);
