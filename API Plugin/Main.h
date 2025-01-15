@@ -10,6 +10,11 @@ namespace plugin
 {
 	inline __int64 moduleBase;
 	inline __int64 moduleLength;
+	class api
+	{
+	public:
+		static __int64 RecalculateAddress(__int64);
+	};
 };
 
 extern "C"
@@ -21,5 +26,6 @@ extern "C"
 	__declspec(dllexport) void __stdcall GameLoop(__int64 a);
 	__declspec(dllexport) bool __stdcall ParseApiFiles(__int64 a, std::string filePath, std::vector<char> fileBytes);
 }
+
 
 #endif

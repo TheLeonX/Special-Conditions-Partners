@@ -80,3 +80,13 @@ bool __stdcall ParseApiFiles(__int64 a, std::string filePath, std::vector<char> 
 	
 	return false;
 }
+
+__int64 plugin::api::RecalculateAddress(__int64 a)
+{
+	uintptr_t recalc = plugin::moduleBase + a;
+
+	if (a > 0x13A38AD) recalc += 0x400;
+	else if (a > 0xEA7420) recalc += 0x400;
+
+	return recalc;
+}

@@ -3,6 +3,7 @@
 #include <vector>
 namespace plugin {
 	static bool Hook(void*, void*, int, bool isPlugin = false);
+	static bool HookShort(void*, void*, int, bool isPlugin = false);
 	bool init();
 	void hookall();
 	bool hookfunc(__int64 funcaddr, LPVOID detourfunc, LPVOID* originalfunc);

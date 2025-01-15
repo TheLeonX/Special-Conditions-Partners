@@ -438,3 +438,21 @@ __int64 condition::Motion_cancel_function(int* a1)
 	return 1i64;
 }
 
+bool __fastcall condition::sub_14084FB90(unsigned int* a1)
+{
+
+	return 1;
+}
+
+bool __fastcall condition::CustomConditionFunction(__int64 a1) {
+
+	int character = *((int*)(a1 + 0xE64));
+	int condition = *((int*)(a1 + 0xF2C));
+
+
+	if (character == 124 || condition == 1) {
+		return true;
+	}
+	return false;
+}
+

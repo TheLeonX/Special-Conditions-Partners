@@ -334,8 +334,8 @@ void plugin::hookall() {
 
 	}
 
+	//Update D-PAD hud
 	
-
 }
 
 

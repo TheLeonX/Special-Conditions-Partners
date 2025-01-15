@@ -52,4 +52,6 @@ public:
 	static int __fastcall EnableUpgradeCancel(int* a1);
 	static __int64 __fastcall UpgradeVerUnlocker(__int64 a1, __int64 a2);
 	static __int64 Motion_cancel_function(int* a1);
+	static bool __fastcall sub_14084FB90(unsigned int* a1);
+	static bool __fastcall CustomConditionFunction(__int64 a1);
 };

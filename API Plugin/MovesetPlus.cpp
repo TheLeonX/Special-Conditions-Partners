@@ -14,6 +14,8 @@
 #include <format>
 #include "Common.h"
 
+#include <cmath> // For fabs (absolute value for floats)
+#include <cstdint>
 #include <thread>
 #include <chrono>
 using namespace std;
@@ -41,6 +43,15 @@ void me_change_walk_speed(__int64 p, float speed);
 void me_change_jump_height(__int64 p, float jump_h);
 void me_SetPlayerParam(__int64 s, int param2, float value);
 void me_ChangePlayerParam(__int64 s, int param2, float value);
+void me_SetPlayerVisibility(__int64 p, int cansee);
+void me_enable_dpad_animation(__int64 a1, int param2);
+void me_enable_control(__int64 a1, int enemy, int control);
+void me_disable_control(__int64 a1, int enemy, int control);
+void me_change_dpad_charge(__int64 a1, int enemy, int arrow, float charge);
+void me_change_control_timed(__int64 a1, int enemy, int control, float time);
+
+bool ReplaceBytes(void* address, const uint8_t* newBytes, size_t size);
+
 int crc32(const std::string& input);
 
 __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
@@ -109,8 +120,27 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 			me_ChangePlayerParam(me_FindHealthPointer(param3, side), param2, param4);
 			break;
 		case 12:
+			me_SetPlayerVisibility(a1, param2);
+			break;
+		case 13:
+			me_enable_dpad_animation(a1, param2);
+			break;
+		case 14:
+			me_enable_control(a1, param2, param3);
+			break;
+		case 15:
+			me_disable_control(a1, param2, param3);
+			break;
+		case 16:
+			me_change_control_timed(a1, param2, param3, param4);
+			break;
+		case 17:
+			me_change_dpad_charge(a1, param2, param3, param4);
+			break;
+		case 18:
 			me_character_param(a1);
 			break;
+
 	}
 
 	return 1;
@@ -126,7 +156,21 @@ void me_EnemyDispOff(__int64 a1)
 
 }
 
-#include <cstdint>
+void me_enable_dpad_animation(__int64 a1, int param2) {
+	// Address of the target bytes
+	__int64 DPadHudAddress = PatternScan::Scan("83xxxxxxxxxxxx44xxxxxx44xxxxxx44xxxxxx0Fxxxxxxxxxx44xxxxxx66xxxxxxxxxxxxxxF3xxxxxxxxxx");
+	void* targetAddress = (void*)(DPadHudAddress + 2); // Adjust offset if necessary
+
+	// Original and new byte sequences
+	uint8_t originalBytes[] = { 0x64, 0x0E, 0x00, 0x00, 0x7C };
+	uint8_t newBytes[] = { 0x2C, 0x0F, 0x00, 0x00, 0x01 };
+
+	*(int*)(a1 + 0xF2C) = param2;
+	// Replace bytes and monitor changes
+	ReplaceBytes(targetAddress, newBytes, sizeof(newBytes));
+
+}
+
 
 uintptr_t me_FindHealthPointer(int characterId, int playerSide)
 {
@@ -188,7 +232,44 @@ uintptr_t me_FindHealthPointer(int characterId, int playerSide)
 }
 
 
-#include <cmath> // For fabs (absolute value for floats)
+void me_change_dpad_charge(__int64 char_p, int enemy, int arrow, float charge)
+{
+	__int64 pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	if (enemy == 0)
+		pointer = char_p;
+	else
+		pointer = sub_1409B9FB0_f(char_p);
+
+	switch (arrow) {
+	case 0://All Arrow
+		*(float*)(pointer + 0x12B74) = charge; //Up Arrow
+		*(float*)(pointer + 0x12B78) = charge; //Down Arrow
+		*(float*)(pointer + 0x12B7C) = charge; //Left Arrow
+		*(float*)(pointer + 0x12B80) = charge; //Right Arrow
+		break;
+	case 1:
+		*(float*)(pointer + 0x12B74) = charge; //Up Arrow
+		break;
+	case 2:
+		*(float*)(pointer + 0x12B78) = charge; //Down Arrow
+		break;
+	case 3:
+		*(float*)(pointer + 0x12B7C) = charge; //Left Arrow
+		break;
+	case 4:
+		*(float*)(pointer + 0x12B80) = charge; //Right Arrow
+		break;
+	}
+}
+
+
+void me_SetPlayerVisibility(__int64 p, int cancel)
+{
+	int* visible = (int*)(p + 0xE98);
+	*visible = cancel;
+}
 
 void me_SetPlayerParam(__int64 s, int param2, float value)
 {
@@ -601,10 +682,280 @@ __int64 __fastcall MovesetPlus::CancelActionFunction(__int64 a1, __int64 a2)
 	return result;
 }
 
+void me_enable_control(__int64 char_p, int enemy, int control) {
+	__int64 pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	if (enemy == 0)
+		pointer = char_p;
+	else
+		pointer = sub_1409B9FB0_f(char_p);
+
+	switch (control) {
+	case 0:
+		*(int*)(pointer + 0x12A24) = 1; //enable PL_ANM_ATK
+		break;
+	case 1:
+		*(int*)(pointer + 0x12A2C) = 1; //enable Ultimate Jutsu
+		break;
+	case 2:
+		*(int*)(pointer + 0x12A34) = 1; //enable Jutsu 1 and Jutsu 2
+		break;
+	case 3:
+		*(int*)(pointer + 0x12A3C) = 1; //enable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		break;
+	case 4:
+		*(int*)(pointer + 0x12A44) = 1; //enable grab
+		break;
+	case 5:
+		*(int*)(pointer + 0x12A48) = 1; //enable substitution jutsu
+		break;
+	case 6:
+		*(int*)(pointer + 0x12A4C) = 1; //enable guard
+		break;
+	case 7:
+		*(int*)(pointer + 0x12A50) = 1; //enable chakra load
+		break;
+	case 8:
+		*(int*)(pointer + 0x12A54) = 1; //enable WASD and chakra
+		break;
+	case 9:
+		*(int*)(pointer + 0x12A58) = 1; //enable jump
+		break;
+	case 10:
+		*(int*)(pointer + 0x12A5C) = 1; //enable ninja movement
+		break;
+	case 11:
+		*(int*)(pointer + 0x12A60) = 1; //enable air dash
+		break;
+	case 12:
+		*(int*)(pointer + 0x12A64) = 1; //enable land dash
+		break;
+	case 13:
+		*(int*)(pointer + 0x12A68) = 1; //enable D-Pad items
+		break;
+	case 14:
+		*(int*)(pointer + 0x12A6C) = 1; //enable leader switch
+		break;
+	case 15:
+		*(int*)(pointer + 0x12A70) = 1; //enable awakening
+		break;
+	case 16:
+		*(int*)(pointer + 0x12A74) = 1; //enable supports
+		break;
+	case 17:
+		*(int*)(pointer + 0x12A80) = 1; //enable counter attack
+		break;
+	}
+}
+void me_disable_control(__int64 char_p, int enemy, int control) {
+	__int64 pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	if (enemy == 0)
+		pointer = char_p;
+	else
+		pointer = sub_1409B9FB0_f(char_p);
+
+	switch (control) {
+	case 0:
+		*(int*)(pointer + 0x12A24) = 0; //disable PL_ANM_ATK
+		break;
+	case 1:
+		*(int*)(pointer + 0x12A2C) = 0; //disable Ultimate Jutsu
+		break;
+	case 2:
+		*(int*)(pointer + 0x12A34) = 0; //disable Jutsu 1 and Jutsu 2
+		break;
+	case 3:
+		*(int*)(pointer + 0x12A3C) = 0; //disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		break;
+	case 4:
+		*(int*)(pointer + 0x12A44) = 0; //disable grab
+		break;
+	case 5:
+		*(int*)(pointer + 0x12A48) = 0; //disable substitution jutsu
+		break;
+	case 6:
+		*(int*)(pointer + 0x12A4C) = 0; //disable guard
+		break;
+	case 7:
+		*(int*)(pointer + 0x12A50) = 0; //disable chakra load
+		break;
+	case 8:
+		*(int*)(pointer + 0x12A54) = 0; //disable WASD and chakra
+		break;
+	case 9:
+		*(int*)(pointer + 0x12A58) = 0; //disable jump
+		break;
+	case 10:
+		*(int*)(pointer + 0x12A5C) = 0; //disable ninja movement
+		break;
+	case 11:
+		*(int*)(pointer + 0x12A60) = 0; //disable air dash
+		break;
+	case 12:
+		*(int*)(pointer + 0x12A64) = 0; //disable land dash
+		break;
+	case 13:
+		*(int*)(pointer + 0x12A68) = 0; //disable D-Pad items
+		break;
+	case 14:
+		*(int*)(pointer + 0x12A6C) = 0; //disable leader switch
+		break;
+	case 15:
+		*(int*)(pointer + 0x12A70) = 0; //disable awakening
+		break;
+	case 16:
+		*(int*)(pointer + 0x12A74) = 0; //disable supports
+		break;
+	case 17:
+		*(int*)(pointer + 0x12A80) = 0; //disable counter attack
+		break;
+	}
+
+}
+void me_change_control_timed(__int64 char_p, int enemy, int control, float duration_s) {
+	__int64 pointer;
+	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
+	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
+	if (enemy == 0)
+		pointer = char_p;
+	else
+		pointer = sub_1409B9FB0_f(char_p);
+
+
+	// Disable the control (set value to 0)
+	switch (control) {
+	case 0:
+		*(int*)(pointer + 0x12A24) = 0; // disable PL_ANM_ATK
+		break;
+	case 1:
+		*(int*)(pointer + 0x12A2C) = 0; // disable Ultimate Jutsu
+		break;
+	case 2:
+		*(int*)(pointer + 0x12A34) = 0; // disable Jutsu 1 and Jutsu 2
+		break;
+	case 3:
+		*(int*)(pointer + 0x12A3C) = 0; // disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		break;
+	case 4:
+		*(int*)(pointer + 0x12A44) = 0; // disable grab
+		break;
+	case 5:
+		*(int*)(pointer + 0x12A48) = 0; // disable substitution jutsu
+		break;
+	case 6:
+		*(int*)(pointer + 0x12A4C) = 0; // disable guard
+		break;
+	case 7:
+		*(int*)(pointer + 0x12A50) = 0; // disable chakra load
+		break;
+	case 8:
+		*(int*)(pointer + 0x12A54) = 0; // disable WASD and chakra
+		break;
+	case 9:
+		*(int*)(pointer + 0x12A58) = 0; // disable jump
+		break;
+	case 10:
+		*(int*)(pointer + 0x12A5C) = 0; // disable ninja movement
+		break;
+	case 11:
+		*(int*)(pointer + 0x12A60) = 0; // disable air dash
+		break;
+	case 12:
+		*(int*)(pointer + 0x12A64) = 0; // disable land dash
+		break;
+	case 13:
+		*(int*)(pointer + 0x12A68) = 0; // disable D-Pad items
+		break;
+	case 14:
+		*(int*)(pointer + 0x12A6C) = 0; // disable leader switch
+		break;
+	case 15:
+		*(int*)(pointer + 0x12A70) = 0; // disable awakening
+		break;
+	case 16:
+		*(int*)(pointer + 0x12A74) = 0; // disable supports
+		break;
+	case 17:
+		*(int*)(pointer + 0x12A80) = 0; // disable counter attack
+		break;
+	}
+
+	// Start a new thread to restore the control after the duration
+	std::thread([=]() {
+		// Wait for the specified duration
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(duration_s * 1000)));
+
+		// Restore the control (set value back to 1)
+		switch (control) {
+		case 0:
+			*(int*)(pointer + 0x12A24) = 1; // restore PL_ANM_ATK
+			break;
+		case 1:
+			*(int*)(pointer + 0x12A2C) = 1; // restore Ultimate Jutsu
+			break;
+		case 2:
+			*(int*)(pointer + 0x12A34) = 1; // restore Jutsu 1 and Jutsu 2
+			break;
+		case 3:
+			*(int*)(pointer + 0x12A3C) = 1; // restore PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+			break;
+		case 4:
+			*(int*)(pointer + 0x12A44) = 1; // restore grab
+			break;
+		case 5:
+			*(int*)(pointer + 0x12A48) = 1; // restore substitution jutsu
+			break;
+		case 6:
+			*(int*)(pointer + 0x12A4C) = 1; // restore guard
+			break;
+		case 7:
+			*(int*)(pointer + 0x12A50) = 1; // restore chakra load
+			break;
+		case 8:
+			*(int*)(pointer + 0x12A54) = 1; // restore WASD and chakra
+			break;
+		case 9:
+			*(int*)(pointer + 0x12A58) = 1; // restore jump
+			break;
+		case 10:
+			*(int*)(pointer + 0x12A5C) = 1; // restore ninja movement
+			break;
+		case 11:
+			*(int*)(pointer + 0x12A60) = 1; // restore air dash
+			break;
+		case 12:
+			*(int*)(pointer + 0x12A64) = 1; // restore land dash
+			break;
+		case 13:
+			*(int*)(pointer + 0x12A68) = 1; // restore D-Pad items
+			break;
+		case 14:
+			*(int*)(pointer + 0x12A6C) = 1; // restore leader switch
+			break;
+		case 15:
+			*(int*)(pointer + 0x12A70) = 1; // restore awakening
+			break;
+		case 16:
+			*(int*)(pointer + 0x12A74) = 1; // restore supports
+			break;
+		case 17:
+			*(int*)(pointer + 0x12A80) = 1; // restore counter attack
+			break;
+		}
+		}).detach(); // Detach the thread to run independently
+}
+
+
+
 void me_character_param(__int64 char_p) {
 	cout << (char_p) << endl;
 	cout << (char_p + 0xE64) << endl;
 }
+
+
 
 
 std::vector<int> crc32_table() {
@@ -633,4 +984,18 @@ int crc32(const std::string& input) {
 	}
 	crc = ~crc;
 	return crc;
+}
+
+bool ReplaceBytes(void* address, const uint8_t* newBytes, size_t size)
+{
+	DWORD oldProtect;
+	if (!VirtualProtect(address, size, PAGE_EXECUTE_READWRITE, &oldProtect))
+		return false;
+
+	memcpy(address, newBytes, size);
+
+	DWORD tempProtect;
+	VirtualProtect(address, size, oldProtect, &tempProtect);
+	FlushInstructionCache(GetCurrentProcess(), address, size);
+	return true;
 }
