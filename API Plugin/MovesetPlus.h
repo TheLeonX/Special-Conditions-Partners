@@ -30,13 +30,11 @@ public:
 	static __int64 ResolveEffectAddress;
 	static __int64 ExecuteEffectAddress;
 
-	static __int64 CameraEffectAddress;
 	static __int64 OriginalStageAddress;
 	static __int64 HandleStageChangeAddress;
 	static __int64 DefaultStageHandlerAddress;
 	static __int64 SpecificStageHandlerAddress;
 	static __int64 CharacterCondition_funcAddress;
-	static __int64 FixCharacterPositionAddress;
 
 	static __int64 OriginalStageAddress2;
 

@@ -444,49 +444,15 @@ bool __fastcall condition::sub_14084FB90(unsigned int* a1)
 	return 1;
 }
 
-// Dynamically managed string array
-std::vector<std::string> condition::SkillStrings;
+bool __fastcall condition::CustomConditionFunction(__int64 a1) {
+
+	int character = *((int*)(a1 + 0xE64));
+	int condition = *((int*)(a1 + 0xF2C));
 
 
-// Function to add a string to the array
-void condition::AddSkillString(const char* newString) {
-	condition::SkillStrings.emplace_back(newString);
-	std::cout << "SkillSlotExpander :: " << "Entry " << newString << " has been added to the game" << std::endl;
-}
-
-__int64 __fastcall condition::SkillExpanderFunction(__int64 a1) {
-	__int64 result = 0i64;
-
-	for (size_t i = 0; i < condition::SkillStrings.size(); ++i) {
-		const char* v4 = condition::SkillStrings[i].c_str();
-
-		// Compare a1 as a string pointer
-		if (strcmp(reinterpret_cast<const char*>(a1), v4) == 0) {
-			std::cout << "Checking a1: " << std::hex << a1 << " against: " << v4 << std::endl;
-			return result;
-		}
-
-		++result;
+	if (character == 124 || condition == 1) {
+		return true;
 	}
-
-	// Skill not found: output error with the skill name
-	std::cout << "Checking a1: " << std::hex << a1
-		<< " couldn't find skill: " << reinterpret_cast<const char*>(a1) << std::endl;
-	return 0xFFFFFFFFi64; // Not found
+	return false;
 }
 
-
-void condition::ReadSkillFile(std::string _file)
-{
-	std::vector<BYTE> fileBytes = ReadAllBytes(_file);
-	int filesize = fileBytes.size();
-
-	for (int x = 0; x < filesize / 0x20; x++) {
-		// Extract exactly 0x20 bytes and ensure null-termination
-		char entry[0x21] = {}; // 0x20 bytes + 1 for null-terminator
-		memcpy(entry, &fileBytes[x * 0x20], 0x20);
-
-		// Pass the string to AddSkillString
-		condition::AddSkillString(entry);
-	}
-}

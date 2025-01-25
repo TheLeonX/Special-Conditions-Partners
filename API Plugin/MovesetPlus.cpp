@@ -49,7 +49,7 @@ void me_enable_control(__int64 a1, int enemy, int control);
 void me_disable_control(__int64 a1, int enemy, int control);
 void me_change_dpad_charge(__int64 a1, int enemy, int arrow, float charge);
 void me_change_control_timed(__int64 a1, int enemy, int control, float time);
-void me_add_camera_effect(__int64 char_p, char*);
+
 bool ReplaceBytes(void* address, const uint8_t* newBytes, size_t size);
 
 int crc32(const std::string& input);
@@ -137,9 +137,6 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 		case 17:
 			me_change_dpad_charge(a1, param2, param3, param4);
 			break;
-		/*case 18:
-			me_add_camera_effect(a1, string_param);
-			break;*/
 		case 18:
 			me_character_param(a1);
 			break;
@@ -148,41 +145,6 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 
 	return 1;
 }
-
-__int64 MovesetPlus::CameraEffectAddress = 0;
-//void me_add_camera_effect(__int64 char_p, char* projectile_entry) {
-//	typedef signed __int64(__fastcall* sub_140AD22B0)(__int64 a1, __int64 a2);
-//	sub_140AD22B0 sub_140AD22B0_f = (sub_140AD22B0)(MovesetPlus::CameraEffectAddress);
-//
-//	__int64 projectileAddress = PatternScan::Scan("0053595552494B454E00", char_p) + 1;
-//
-//	while (projectileAddress) {
-//		char* entryName = (char*)(projectileAddress + 0x00); // Projectile entry name
-//
-//		// Safer string comparison to avoid partial matches or subtle differences
-//		if (strncmp(entryName, projectile_entry, 0x80) == 0 && entryName[0] != '\0') {
-//			char* effectPath = (char*)(projectileAddress + 0x40); // Path for effect
-//			char* effectName = (char*)(projectileAddress + 0x60); // Name for effect
-//			cout << "Effect Path: " << effectPath << endl;
-//			cout << "Effect Name: " << effectName << endl;
-//			// Validate that both effectPath and effectName are non-empty
-//			if (effectPath[0] != '\0' && effectName[0] != '\0') {
-//				*(__int64*)(char_p + 0x12040) = sub_140AD22B0_f((__int64)effectPath, (__int64)effectName);
-//			}
-//			return; // Exit after finding and playing the correct projectile
-//		}
-//
-//		// Move to the next entry (each entry is 0x81 bytes in length)
-//		projectileAddress += 0x81;
-//
-//		// Stop if the next entry name is empty (00s bytes)
-//		if (*(char*)(projectileAddress) == '\0') {
-//			break;
-//		}
-//	}
-//}
-
-
 void me_EnemyDispOff(__int64 a1)
 {
 	__int64 v1; // rax  
@@ -486,7 +448,6 @@ __int64 MovesetPlus::OriginalStageAddress = 0;
 __int64 MovesetPlus::HandleStageChangeAddress = 0;
 __int64 MovesetPlus::DefaultStageHandlerAddress = 0;
 __int64 MovesetPlus::SpecificStageHandlerAddress = 0;
-__int64 MovesetPlus::FixCharacterPositionAddress = 0;
 
 __int64 MovesetPlus::OriginalStageAddress2 = 0;
 
@@ -505,9 +466,6 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 
 	typedef void(__fastcall* Sub_1406F6830)(__int64, unsigned int);
 	Sub_1406F6830 sub_1406F6830_f = (Sub_1406F6830)(MovesetPlus::SpecificStageHandlerAddress);
-
-	typedef void(__fastcall* sub_140643C10)(__int64);
-	sub_140643C10 sub_140643C10_f = (sub_140643C10)(MovesetPlus::FixCharacterPositionAddress);
 
 
 	
@@ -533,8 +491,6 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 	cout << "Hash Stage: " << *(int*)(Common::GetQword(stageOffset) + 8) << endl;
 
 	sub_1408EAE00_f(*(int*)(Common::GetQword(stageOffset) + 8));
-	sub_140643C10_f(character_pointer);
-	sub_140643C10_f(enemy_pointer);
 }
 
 
