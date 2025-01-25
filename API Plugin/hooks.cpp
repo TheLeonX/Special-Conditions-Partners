@@ -45,9 +45,10 @@ void plugin::hookall() {
 		MovesetPlus::HandleStageChangeAddress = PatternScan::Scan("40xx48xxxxxx8Bxx48xxxxxxxxxxxxE8xxxxxxxx48xxxxxxxxxxxx8BxxE8xxxxxxxx48xxxxxxxxxxxxC7xxxxxxxxxxxxC7xxxxxxxxxxxx");
 		MovesetPlus::DefaultStageHandlerAddress = PatternScan::Scan("40xx48xxxxxx83xxxxxx48xxxx74xx8BxxxxE8xxxxxxxxC7xxxxxxxxxxxx48xxxxxx5BC3");
 		MovesetPlus::SpecificStageHandlerAddress = PatternScan::Scan("40xx48xxxxxx48xxxxxxxxxxxx48xxxx39xxxx74xxE8xxxxxxxxC7xxxxxxxxxxxx48xxxxxx5BC3");
-
+		MovesetPlus::FixCharacterPositionAddress = PatternScan::Scan("40xx48xxxxxxF2xxxxxxxx4Cxxxxxxxx8Bxxxx45xxxxF2xxxxxxxxxxBAxxxxxxxx89xxxxxx48xxxxF3xxxxxxxxxxF3xxxxxxxxxxxxxx");
 		MovesetPlus::OriginalStageAddress2 = PatternScan::Scan("48xxxxxxxx5748xxxxxx8Bxxxxxxxxxx48xxxx65xxxxxxxxxxxxxxxx48xxxxB9xxxxxxxx4Dxxxxxx42xxxxxx39xxxxxxxxxx7Fxx");
 
+		MovesetPlus::CameraEffectAddress = PatternScan::Scan("48xxxxxxxx48xxxxxxxx5748xxxxxx48xxxx48xxxx48xxxx48xxxxxxxxxxxxE8xxxxxxxx48xxxx48xxxx75xx48xxxx48xxxxxxxxxxxx");
 		plugin::Hook((void*)(movesetPlusFunctionAddress), MovesetPlus::meTest, 16);
 
 	}
@@ -334,7 +335,12 @@ void plugin::hookall() {
 
 	}
 
-	//Update D-PAD hud
+	//Skill Expander
+	/*__int64 SkillExpanderAddress = PatternScan::Scan("4Cxxxx4Cxxxxxxxxxxxx33xx0Fxxxxxx49xxxx4Dxxxx4Cxxxx0Fxxxxxxxxxxxx44xxxxxx42xxxxxxxx44xxxx75xx48xxxx");
+	if (SkillExpanderAddress > 1) {
+		cout << "SkillExpander :: Hooked" << endl;
+		plugin::Hook((void*)(SkillExpanderAddress), condition::SkillExpanderFunction, 16);
+	}*/
 	
 }
 

@@ -32,6 +32,7 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
 	if (test) {
 		condition::ReadSpecialConditionParam(e + "specialCondParam.xfbin");
 	}
+
 	std::ifstream af_partner(e + "partnerSlotParam.xfbin");
 	af_partner.is_open();
 	bool test_partner = af_partner.good();
@@ -39,6 +40,12 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
 		condition::ReadPartnerSlotParam(e + "partnerSlotParam.xfbin");
 	}
 
+	/*std::ifstream af_skill(e + "skillSlotParam.xfbin");
+	af_skill.is_open();
+	bool test_skill = af_skill.good();
+	if (test_skill) {
+		condition::ReadSkillFile(e + "skillSlotParam.xfbin");
+	}*/
 
 }
 
@@ -77,7 +84,7 @@ void __stdcall GameLoop(__int64 a)
 // This function is called when the API is loading a mod's files. Return true if the file was read by this plugin, otherwise return false for the API to manage the file.
 bool __stdcall ParseApiFiles(__int64 a, std::string filePath, std::vector<char> fileBytes)
 {
-	
+
 	return false;
 }
 

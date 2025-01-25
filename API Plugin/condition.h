@@ -34,6 +34,7 @@ struct PartnerFramework
 
 class condition {
 public:
+	static std::vector<std::string> SkillStrings;
 	static void ReadSpecialConditionParam(std::string _file);
 	static __int64 __fastcall Create(int characterNum, int a2);
 	static std::vector<PartnerFunction*> partnerFunctionList;
@@ -53,5 +54,7 @@ public:
 	static __int64 __fastcall UpgradeVerUnlocker(__int64 a1, __int64 a2);
 	static __int64 Motion_cancel_function(int* a1);
 	static bool __fastcall sub_14084FB90(unsigned int* a1);
-	static bool __fastcall CustomConditionFunction(__int64 a1);
+	static void AddSkillString(const char* newString);
+	static __int64 __fastcall SkillExpanderFunction(__int64 a1);
+	static void ReadSkillFile(std::string _file);
 };
