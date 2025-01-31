@@ -47,7 +47,7 @@ void plugin::hookall() {
 		MovesetPlus::SpecificStageHandlerAddress = PatternScan::Scan("40xx48xxxxxx48xxxxxxxxxxxx48xxxx39xxxx74xxE8xxxxxxxxC7xxxxxxxxxxxx48xxxxxx5BC3");
 
 		MovesetPlus::OriginalStageAddress2 = PatternScan::Scan("48xxxxxxxx5748xxxxxx8Bxxxxxxxxxx48xxxx65xxxxxxxxxxxxxxxx48xxxxB9xxxxxxxx4Dxxxxxx42xxxxxx39xxxxxxxxxx7Fxx");
-
+		MovesetPlus::FixCharPositionAddress = PatternScan::Scan("48xxxx48xxxxxx48xxxxxx48xxxxxx5541xx41xx41xx41xx48xxxxxxxxxxxx48xxxxxxxxxxxx0Fxxxxxx0Fxxxxxx44xxxxxxxx44xxxxxxxx44xxxxxxxx48xxxxxxxxxxxx48xxxx48xxxxxxxxxxxx4Cxxxx33xx89xxxxxx48xxxxxxxxxxxx45xxxxxx");
 		plugin::Hook((void*)(movesetPlusFunctionAddress), MovesetPlus::meTest, 16);
 
 	}
@@ -334,8 +334,22 @@ void plugin::hookall() {
 
 	}
 
-	//Update D-PAD hud
-	
+	char ApiPath[_MAX_PATH];
+	GetCurrentDirectory(_MAX_PATH, ApiPath);
+	int ActualLength = strlen(ApiPath);
+
+	strcat(ApiPath, "\\moddingapi\\");
+
+	char ConfigPath[_MAX_PATH];
+	strcpy(ConfigPath, ApiPath);
+	ActualLength = strlen(ConfigPath);
+	strcat(ConfigPath, "config.ini");
+
+	__int64 debug_str_address = PatternScan::Scan("48xxxxxxxx4Cxxxxxxxx4CxxxxxxxxC30Fxxxx33xx4Cxxxx44xxxx85xx74xx908Bxx4Dxxxxxx83xxxx83xxxxD3xx41xxxx41xxxxxxxxxxxx33xx41xxxxxx85xx75xxC3");
+	if (GetPrivateProfileInt("General", "enable_debug", 1, ConfigPath) == 1 && debug_str_address > 1)
+	{
+		plugin::Hook((void*)(debug_str_address), condition::sub_1412528C0, 15);
+	}
 }
 
 

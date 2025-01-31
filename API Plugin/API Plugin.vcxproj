@@ -149,6 +149,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="condition.h" />
     <ClInclude Include="MovesetPlus.h" />
+    <ClInclude Include="Offsets.h" />
     <ClInclude Include="PatternScan.h" />
     <ClInclude Include="Thirdparty\MinHook.h" />
   </ItemGroup>

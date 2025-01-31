@@ -54,4 +54,5 @@ public:
 	static __int64 Motion_cancel_function(int* a1);
 	static bool __fastcall sub_14084FB90(unsigned int* a1);
 	static bool __fastcall CustomConditionFunction(__int64 a1);
+	static void __fastcall sub_1412528C0(const char* Format, ...);
 };

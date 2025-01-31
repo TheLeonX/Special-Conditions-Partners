@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include "PatternScan.h"
 #include "Common.h"
+using namespace std;
 
 int condition::cancelUpgradeFunctionState = 0;
 __int64 condition::sub_14097F1E0Adress = 0;
@@ -455,4 +456,19 @@ bool __fastcall condition::CustomConditionFunction(__int64 a1) {
 	}
 	return false;
 }
+void __fastcall condition::sub_1412528C0(const char* Format, ...) {
+	int v2;
+	char Buffer[1024] = { 0 };
+	wchar_t WideCharStr[1036] = { 0 };
+	va_list va;
 
+	va_start(va, Format);
+	v2 = vsnprintf(Buffer, sizeof(Buffer), Format, va);
+	va_end(va);
+
+	if (MultiByteToWideChar(0xFDE9, 0, Buffer, -1, WideCharStr, 1024)) {
+		fputws(WideCharStr, stdout);  // Print to stdout
+		fflush(stdout);  // Ensure immediate output
+		OutputDebugStringW(WideCharStr);
+	}
+}

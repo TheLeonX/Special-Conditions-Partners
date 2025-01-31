@@ -52,5 +52,8 @@
     <ClInclude Include="MovesetPlus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Offsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

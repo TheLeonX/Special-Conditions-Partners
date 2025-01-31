@@ -13,6 +13,7 @@
 #include <string>
 #include <format>
 #include "Common.h"
+#include "Offsets.h"
 
 #include <cmath> // For fabs (absolute value for floats)
 #include <cstdint>
@@ -22,8 +23,6 @@ using namespace std;
 
 
 __int64 MovesetPlus::CharacterCondition_funcAddress = 0;
-
-__int64 stageOffset = 0x14218C5E0; //get that id from kaguya's screen stage switch effect
 
 #define CHECK_BIT(var,pos) (((var)>>(pos)) & 1)
 int prevFrame = 0;
@@ -448,6 +447,7 @@ __int64 MovesetPlus::OriginalStageAddress = 0;
 __int64 MovesetPlus::HandleStageChangeAddress = 0;
 __int64 MovesetPlus::DefaultStageHandlerAddress = 0;
 __int64 MovesetPlus::SpecificStageHandlerAddress = 0;
+__int64 MovesetPlus::FixCharPositionAddress = 0;
 
 __int64 MovesetPlus::OriginalStageAddress2 = 0;
 
@@ -467,30 +467,30 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 	typedef void(__fastcall* Sub_1406F6830)(__int64, unsigned int);
 	Sub_1406F6830 sub_1406F6830_f = (Sub_1406F6830)(MovesetPlus::SpecificStageHandlerAddress);
 
-
-	
-
-
+	typedef void(__fastcall* sub_140643C10)(__int64);
+	sub_140643C10 sub_140643C10_f = (sub_140643C10)(MovesetPlus::FixCharPositionAddress);
 
 	enemy_pointer = sub_1409B9FB0_f(character_pointer);
 	if (*(int*)(character_pointer + 0xEF4) == 0) {
 
-		*(int*)(character_pointer + 0xEF4) = *(int*)(Common::GetQword(stageOffset) + 8);
-		*(int*)(enemy_pointer + 0xEF4) = *(int*)(Common::GetQword(stageOffset) + 8);
+		*(int*)(character_pointer + 0xEF4) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
+		*(int*)(enemy_pointer + 0xEF4) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
 	}
 	if (param2 == 0) {
-		sub_1406F6830_f(Common::GetQword(stageOffset) + 8, crc32((std::string)string_param)); // Specific stage handler << endl;
+		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, crc32((std::string)string_param)); // Specific stage handler << endl;
 	}
 	else {
-		sub_1406F6830_f(Common::GetQword(stageOffset) + 8, *(int*)(character_pointer + 0xEF4)); // Specific stage handler
+		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, *(int*)(character_pointer + 0xEF4)); // Specific stage handler
 	}
-
 
 	cout << "Original Stage1: " << *(int*)(character_pointer + 0xEF4) << endl;
 	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xEF4) << endl;
-	cout << "Hash Stage: " << *(int*)(Common::GetQword(stageOffset) + 8) << endl;
+	cout << "Hash Stage: " << *(int*)(Common::GetQword(offset::stageOffset) + 8) << endl;
 
-	sub_1408EAE00_f(*(int*)(Common::GetQword(stageOffset) + 8));
+	sub_1408EAE00_f(*(int*)(Common::GetQword(offset::stageOffset) + 8));
+
+	sub_140643C10_f(character_pointer);
+	sub_140643C10_f(enemy_pointer);
 }
 
 
@@ -503,7 +503,7 @@ int MovesetPlus::BGM_ID;
 void me_PlayBGM(int snd)
 {
 	//find ccAdvPlayStageBgm or check offset 0xB2B10 in 1.01 version of file
-	__int64 offset = 0x14218BE20;
+	__int64 offset = offset::bgmOffset;
 	if (snd == 0) {
 		MovesetPlus::BGM_ID = 0;
 		typedef signed  __int64(__fastcall* IsPlayBgm)(__int64 a1, int a2);
