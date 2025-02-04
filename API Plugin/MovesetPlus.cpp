@@ -162,9 +162,9 @@ void me_enable_dpad_animation(__int64 a1, int param2) {
 
 	// Original and new byte sequences
 	uint8_t originalBytes[] = { 0x64, 0x0E, 0x00, 0x00, 0x7C };
-	uint8_t newBytes[] = { 0x2C, 0x0F, 0x00, 0x00, 0x01 };
+	uint8_t newBytes[] = { 0x30, 0x0F, 0x00, 0x00, 0x01 };
 
-	*(int*)(a1 + 0xF2C) = param2;
+	*(int*)(a1 + 0xF30) = param2;
 	// Replace bytes and monitor changes
 	ReplaceBytes(targetAddress, newBytes, sizeof(newBytes));
 
@@ -181,7 +181,7 @@ uintptr_t me_FindHealthPointer(int characterId, int playerSide)
 	uintptr_t* p6 = nullptr;
 
 	// Base address for the module
-	p1 = (uintptr_t*)(plugin::moduleBase + 0x0219A628);
+	p1 = (uintptr_t*)(plugin::moduleBase + 0x0219D808);
 	if (p1 == nullptr || *p1 == 0) return 0;
 
 	// Offset 0 (Player or Enemy selection based on playerSide)
@@ -243,22 +243,22 @@ void me_change_dpad_charge(__int64 char_p, int enemy, int arrow, float charge)
 
 	switch (arrow) {
 	case 0://All Arrow
-		*(float*)(pointer + 0x12B74) = charge; //Up Arrow
-		*(float*)(pointer + 0x12B78) = charge; //Down Arrow
-		*(float*)(pointer + 0x12B7C) = charge; //Left Arrow
-		*(float*)(pointer + 0x12B80) = charge; //Right Arrow
+		*(float*)(pointer + 0x12B88) = charge; //Up Arrow
+		*(float*)(pointer + 0x12B8C) = charge; //Down Arrow
+		*(float*)(pointer + 0x12B90) = charge; //Left Arrow
+		*(float*)(pointer + 0x12B94) = charge; //Right Arrow
 		break;
 	case 1:
-		*(float*)(pointer + 0x12B74) = charge; //Up Arrow
+		*(float*)(pointer + 0x12B88) = charge; //Up Arrow
 		break;
 	case 2:
-		*(float*)(pointer + 0x12B78) = charge; //Down Arrow
+		*(float*)(pointer + 0x12B8C) = charge; //Down Arrow
 		break;
 	case 3:
-		*(float*)(pointer + 0x12B7C) = charge; //Left Arrow
+		*(float*)(pointer + 0x12B90) = charge; //Left Arrow
 		break;
 	case 4:
-		*(float*)(pointer + 0x12B80) = charge; //Right Arrow
+		*(float*)(pointer + 0x12B94) = charge; //Right Arrow
 		break;
 	}
 }
@@ -266,36 +266,25 @@ void me_change_dpad_charge(__int64 char_p, int enemy, int arrow, float charge)
 
 void me_SetPlayerVisibility(__int64 p, int cancel)
 {
-	int* visible = (int*)(p + 0xE98);
+	int* visible = (int*)(p + 0xE9C);
 	*visible = cancel;
 }
 
 void me_SetPlayerParam(__int64 s, int param2, float value)
 {
-	const float EPSILON = 0.0001f; // Small value to account for floating-point precision errors
-	float new_val = 0.0f;
-
 	switch (param2)
 	{
 	case 0: // health
-		if (*(float*)(s + 0x00) + value > *(float*)(s + 0x04) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x00) + value) - *(float*)(s + 0x04);
-		}
-		*(float*)(s + 0x00) = value - new_val;
+		*(float*)(s + 0x00) = (value > *(float*)(s + 0x04)) ? *(float*)(s + 0x04) : value;
 		break;
 
 	case 1: // maxhealth
 		*(float*)(s + 0x04) = value;
-		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), value); // Ensure current health <= max health
+		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), value);
 		break;
 
 	case 2: // chakra
-		if (*(float*)(s + 0x08) + value > *(float*)(s + 0x0C) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x08) + value) - *(float*)(s + 0x0C);
-		}
-		*(float*)(s + 0x08) = value - new_val;
+		*(float*)(s + 0x08) = (value > *(float*)(s + 0x0C)) ? *(float*)(s + 0x0C) : value;
 		break;
 
 	case 3: // maxchakra
@@ -304,11 +293,7 @@ void me_SetPlayerParam(__int64 s, int param2, float value)
 		break;
 
 	case 4: // sub
-		if (*(float*)(s + 0x10) + value > *(float*)(s + 0x14) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x10) + value) - *(float*)(s + 0x14);
-		}
-		*(float*)(s + 0x10) = value - new_val;
+		*(float*)(s + 0x10) = (value > *(float*)(s + 0x14)) ? *(float*)(s + 0x14) : value;
 		break;
 
 	case 5: // maxsub
@@ -320,30 +305,19 @@ void me_SetPlayerParam(__int64 s, int param2, float value)
 
 void me_ChangePlayerParam(__int64 s, int param2, float value)
 {
-	const float EPSILON = 0.0001f; // Small value to account for floating-point precision errors
-	float new_val = 0.0f;
-
 	switch (param2)
 	{
 	case 0: // health
-		if (*(float*)(s + 0x00) + value > *(float*)(s + 0x04) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x00) + value) - *(float*)(s + 0x04);
-		}
-		*(float*)(s + 0x00) += value - new_val;
+		*(float*)(s + 0x00) = min(*(float*)(s + 0x00) + value, *(float*)(s + 0x04));
 		break;
 
 	case 1: // maxhealth
 		*(float*)(s + 0x04) += value;
-		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), *(float*)(s + 0x04)); // Ensure current health <= max health
+		*(float*)(s + 0x00) = min(*(float*)(s + 0x00), *(float*)(s + 0x04));
 		break;
 
 	case 2: // chakra
-		if (*(float*)(s + 0x08) + value > *(float*)(s + 0x0C) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x08) + value) - *(float*)(s + 0x0C);
-		}
-		*(float*)(s + 0x08) += value - new_val;
+		*(float*)(s + 0x08) = min(*(float*)(s + 0x08) + value, *(float*)(s + 0x0C));
 		break;
 
 	case 3: // maxchakra
@@ -352,11 +326,7 @@ void me_ChangePlayerParam(__int64 s, int param2, float value)
 		break;
 
 	case 4: // sub
-		if (*(float*)(s + 0x10) + value > *(float*)(s + 0x14) + EPSILON)
-		{
-			new_val = (*(float*)(s + 0x10) + value) - *(float*)(s + 0x14);
-		}
-		*(float*)(s + 0x10) += value - new_val;
+		*(float*)(s + 0x10) = min(*(float*)(s + 0x10) + value, *(float*)(s + 0x14));
 		break;
 
 	case 5: // maxsub
@@ -371,36 +341,36 @@ void me_change_skill(__int64 char_p, int jutsu, int index) {
 	if (index > -1 && index <= 6) {
 		if (jutsu == 0) {
 
-			*(int*)(char_p + 0xE74) = index; //Jutsu 1
+			*(int*)(char_p + 0xE78) = index; //Jutsu 1
 		}
 		else if (jutsu == 1) {
 
-			*(int*)(char_p + 0xE78) = index; //Jutsu 2
+			*(int*)(char_p + 0xE7C) = index; //Jutsu 2
 		}
 		else if (jutsu == 2) {
 
-			*(int*)(char_p + 0xE7C) = index; // Ultimate Jutsu
+			*(int*)(char_p + 0xE80) = index; // Ultimate Jutsu
 		}
 	}
 	
 }
 void me_play_blur(__int64 p) {
-	*(int*)(p + 72072) = 1;
+	*(int*)(p + 0x11998) = 1;
 
 }
 void me_change_fov(__int64 p, float FOV) {
 	if (FOV > 0)
-		*(float*)(p + 72080) = FOV;
+		*(float*)(p + 0x119A0) = FOV;
 	else
-		*(float*)(p + 72080) = -1;
+		*(float*)(p + 0x119A0) = -1;
 
 }
 
 void me_change_walk_speed(__int64 p, float speed) {
-	*(float*)(p + 68916) = speed;
+	*(float*)(p + 0x10D44) = speed;
 }
 void me_change_jump_height(__int64 p, float jump_h) {
-	*(float*)(p + 68908) = jump_h;
+	*(float*)(p + 0x10D3C) = jump_h;
 }
 void me_change_speed(__int64 char_p, int enemy, float speed) {
 	__int64 enemy_pointer;
@@ -471,20 +441,20 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 	sub_140643C10 sub_140643C10_f = (sub_140643C10)(MovesetPlus::FixCharPositionAddress);
 
 	enemy_pointer = sub_1409B9FB0_f(character_pointer);
-	if (*(int*)(character_pointer + 0xEF4) == 0) {
+	if (*(int*)(character_pointer + 0xEF8) == 0) {
 
-		*(int*)(character_pointer + 0xEF4) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
-		*(int*)(enemy_pointer + 0xEF4) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
+		*(int*)(character_pointer + 0xEF8) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
+		*(int*)(enemy_pointer + 0xEF8) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
 	}
 	if (param2 == 0) {
 		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, crc32((std::string)string_param)); // Specific stage handler << endl;
 	}
 	else {
-		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, *(int*)(character_pointer + 0xEF4)); // Specific stage handler
+		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, *(int*)(character_pointer + 0xEF8)); // Specific stage handler
 	}
 
-	cout << "Original Stage1: " << *(int*)(character_pointer + 0xEF4) << endl;
-	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xEF4) << endl;
+	cout << "Original Stage1: " << *(int*)(character_pointer + 0xEF8) << endl;
+	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xEF8) << endl;
 	cout << "Hash Stage: " << *(int*)(Common::GetQword(offset::stageOffset) + 8) << endl;
 
 	sub_1408EAE00_f(*(int*)(Common::GetQword(offset::stageOffset) + 8));
@@ -584,8 +554,8 @@ __int64 __fastcall MovesetPlus::InitializeEffectHandler_f(__int64 a1)
 	__int64 result; // rax
 
 	result = 0i64;
-	if (*(__int64*)(a1 + 71496))
-		return *(__int64*)(a1 + 71496);
+	if (*(__int64*)(a1 + 71512))
+		return *(__int64*)(a1 + 71512);
 	return result;
 }
 
@@ -599,83 +569,83 @@ __int64 __fastcall MovesetPlus::CancelActionFunction(__int64 a1, __int64 a2)
 	switch (*(int*)(a2 + 36))
 	{
 	case 0:
-		*(int*)(a1 + 73712) = 1;
+		*(int*)(a1 + 73728) = 1;
 		result = 1i64;
 		break;
 	case 1:
-		*(int*)(a1 + 73712) = 2; //JUMP CANCEL
+		*(int*)(a1 + 73728) = 2; //JUMP CANCEL
 		result = 1i64;
 		break;
 	case 2:
-		*(int*)(a1 + 73712) = 4;
+		*(int*)(a1 + 73728) = 4;
 		result = 1i64;
 		break;
 	case 3:
-		*(int*)(a1 + 73712) = 8; //DASH CANCEL
+		*(int*)(a1 + 73728) = 8; //DASH CANCEL
 		result = 1i64;
 		break;
 	case 4:
-		*(int*)(a1 + 73712) = 16; // COMBO CANCEL
+		*(int*)(a1 + 73728) = 16; // COMBO CANCEL
 		result = 1i64;
 		break;
 	case 5:
-		*(int*)(a1 + 73712) = 32; // GRAB CANCEL
+		*(int*)(a1 + 73728) = 32; // GRAB CANCEL
 		result = 1i64;
 		break;
 	case 6:
-		*(int*)(a1 + 73712) = 64; //JUTSU CANCEL
+		*(int*)(a1 + 73728) = 64; //JUTSU CANCEL
 		result = 1i64;
 		break;
 	case 7:
-		*(int*)(a1 + 73712) = 128;
+		*(int*)(a1 + 73728) = 128;
 		result = 1i64;
 		break;
 	case 8:
-		*(int*)(a1 + 73712) = 256; //ULTIMATE JUTSU CANCEL
+		*(int*)(a1 + 73728) = 256; //ULTIMATE JUTSU CANCEL
 		result = 1i64;
 		break;
 	case 9:
-		*(int*)(a1 + 73712) = 15; //WALK
+		*(int*)(a1 + 73728) = 15; //WALK
 		result = 1i64;
 		break;
 	case 0xA:
-		*(int*)(a1 + 73712) = 208; //JUTSU, COMBO CANCEL
+		*(int*)(a1 + 73728) = 208; //JUTSU, COMBO CANCEL
 		result = 1i64;
 		break;
 	case 0xB:
-		*(int*)(a1 + 73712) = 192;
+		*(int*)(a1 + 73728) = 192;
 		result = 1i64;
 		break;
 	case 0xC:
-		*(int*)(a1 + 73712) = -1; //ALL CANCEL
+		*(int*)(a1 + 73728) = -1; //ALL CANCEL
 		result = 1i64;
 		break;
 	case 0xD:
-		*(int*)(a1 + 73712) = 512;
+		*(int*)(a1 + 73728) = 512;
 		result = 1i64;
 		break;
 	case 0xE:
-		*(int*)(a1 + 73712) = 1024; //SHURIKEN CANCEL
+		*(int*)(a1 + 73728) = 1024; //SHURIKEN CANCEL
 		result = 1i64;
 		break;
 	case 0xF:
-		*(int*)(a1 + 73712) = -1030; //COMBO, JUTSU, ULTIMATE, JUMP, GRAB, DASH
+		*(int*)(a1 + 73728) = -1030; //COMBO, JUTSU, ULTIMATE, JUMP, GRAB, DASH
 		result = 1i64;
 		break;
 	case 0x10:
-		*(int*)(a1 + 73712) = -22; // SHURIKEN, JUTSU, ULTIMATE, JUMP, GRAB, DASH
+		*(int*)(a1 + 73728) = -22; // SHURIKEN, JUTSU, ULTIMATE, JUMP, GRAB, DASH
 		result = 1i64;
 		break;
 	case 0x11:
-		*(int*)(a1 + 73712) = 1120; // GRAB, SHURIKEN, JUTSU
+		*(int*)(a1 + 73728) = 1120; // GRAB, SHURIKEN, JUTSU
 		result = 1i64;
 		break;
 	case 0x12:
-		*(int*)(a1 + 73712) = -6; //COMBO, JUTSU, ULTIMATE, JUMP, SHURIKEN, GRAB, DASH
+		*(int*)(a1 + 73728) = -6; //COMBO, JUTSU, ULTIMATE, JUMP, SHURIKEN, GRAB, DASH
 		result = 1i64;
 		break;
 	default:
-		*(int*)(a1 + 73712) = 0;
+		*(int*)(a1 + 73728) = 0;
 		result = 1i64;
 		break;
 	}
@@ -693,58 +663,58 @@ void me_enable_control(__int64 char_p, int enemy, int control) {
 
 	switch (control) {
 	case 0:
-		*(int*)(pointer + 0x12A24) = 1; //enable PL_ANM_ATK
+		*(int*)(pointer + 0x12A34) = 1; //enable PL_ANM_ATK
 		break;
 	case 1:
-		*(int*)(pointer + 0x12A2C) = 1; //enable Ultimate Jutsu
+		*(int*)(pointer + 0x12A3C) = 1; //enable Ultimate Jutsu
 		break;
 	case 2:
-		*(int*)(pointer + 0x12A34) = 1; //enable Jutsu 1 and Jutsu 2
+		*(int*)(pointer + 0x12A44) = 1; //enable Jutsu 1 and Jutsu 2
 		break;
 	case 3:
-		*(int*)(pointer + 0x12A3C) = 1; //enable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		*(int*)(pointer + 0x12A4C) = 1; //enable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
 		break;
 	case 4:
-		*(int*)(pointer + 0x12A44) = 1; //enable grab
+		*(int*)(pointer + 0x12A54) = 1; //enable grab
 		break;
 	case 5:
-		*(int*)(pointer + 0x12A48) = 1; //enable substitution jutsu
+		*(int*)(pointer + 0x12A58) = 1; //enable substitution jutsu
 		break;
 	case 6:
-		*(int*)(pointer + 0x12A4C) = 1; //enable guard
+		*(int*)(pointer + 0x12A5C) = 1; //enable guard
 		break;
 	case 7:
-		*(int*)(pointer + 0x12A50) = 1; //enable chakra load
+		*(int*)(pointer + 0x12A60) = 1; //enable chakra load
 		break;
 	case 8:
-		*(int*)(pointer + 0x12A54) = 1; //enable WASD and chakra
+		*(int*)(pointer + 0x12A64) = 1; //enable WASD and chakra
 		break;
 	case 9:
-		*(int*)(pointer + 0x12A58) = 1; //enable jump
+		*(int*)(pointer + 0x12A68) = 1; //enable jump
 		break;
 	case 10:
-		*(int*)(pointer + 0x12A5C) = 1; //enable ninja movement
+		*(int*)(pointer + 0x12A6C) = 1; //enable ninja movement
 		break;
 	case 11:
-		*(int*)(pointer + 0x12A60) = 1; //enable air dash
+		*(int*)(pointer + 0x12A70) = 1; //enable air dash
 		break;
 	case 12:
-		*(int*)(pointer + 0x12A64) = 1; //enable land dash
+		*(int*)(pointer + 0x12A74) = 1; //enable land dash
 		break;
 	case 13:
-		*(int*)(pointer + 0x12A68) = 1; //enable D-Pad items
+		*(int*)(pointer + 0x12A78) = 1; //enable D-Pad items
 		break;
 	case 14:
-		*(int*)(pointer + 0x12A6C) = 1; //enable leader switch
+		*(int*)(pointer + 0x12A7C) = 1; //enable leader switch
 		break;
 	case 15:
-		*(int*)(pointer + 0x12A70) = 1; //enable awakening
+		*(int*)(pointer + 0x12A80) = 1; //enable awakening
 		break;
 	case 16:
-		*(int*)(pointer + 0x12A74) = 1; //enable supports
+		*(int*)(pointer + 0x12A84) = 1; //enable supports
 		break;
 	case 17:
-		*(int*)(pointer + 0x12A80) = 1; //enable counter attack
+		*(int*)(pointer + 0x12A90) = 1; //enable counter attack
 		break;
 	}
 }
@@ -759,58 +729,58 @@ void me_disable_control(__int64 char_p, int enemy, int control) {
 
 	switch (control) {
 	case 0:
-		*(int*)(pointer + 0x12A24) = 0; //disable PL_ANM_ATK
+		*(int*)(pointer + 0x12A34) = 0; //disable PL_ANM_ATK
 		break;
 	case 1:
-		*(int*)(pointer + 0x12A2C) = 0; //disable Ultimate Jutsu
+		*(int*)(pointer + 0x12A3C) = 0; //disable Ultimate Jutsu
 		break;
 	case 2:
-		*(int*)(pointer + 0x12A34) = 0; //disable Jutsu 1 and Jutsu 2
+		*(int*)(pointer + 0x12A44) = 0; //disable Jutsu 1 and Jutsu 2
 		break;
 	case 3:
-		*(int*)(pointer + 0x12A3C) = 0; //disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		*(int*)(pointer + 0x12A4C) = 0; //disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
 		break;
 	case 4:
-		*(int*)(pointer + 0x12A44) = 0; //disable grab
+		*(int*)(pointer + 0x12A54) = 0; //disable grab
 		break;
 	case 5:
-		*(int*)(pointer + 0x12A48) = 0; //disable substitution jutsu
+		*(int*)(pointer + 0x12A58) = 0; //disable substitution jutsu
 		break;
 	case 6:
-		*(int*)(pointer + 0x12A4C) = 0; //disable guard
+		*(int*)(pointer + 0x12A5C) = 0; //disable guard
 		break;
 	case 7:
-		*(int*)(pointer + 0x12A50) = 0; //disable chakra load
+		*(int*)(pointer + 0x12A60) = 0; //disable chakra load
 		break;
 	case 8:
-		*(int*)(pointer + 0x12A54) = 0; //disable WASD and chakra
+		*(int*)(pointer + 0x12A64) = 0; //disable WASD and chakra
 		break;
 	case 9:
-		*(int*)(pointer + 0x12A58) = 0; //disable jump
+		*(int*)(pointer + 0x12A68) = 0; //disable jump
 		break;
 	case 10:
-		*(int*)(pointer + 0x12A5C) = 0; //disable ninja movement
+		*(int*)(pointer + 0x12A6C) = 0; //disable ninja movement
 		break;
 	case 11:
-		*(int*)(pointer + 0x12A60) = 0; //disable air dash
+		*(int*)(pointer + 0x12A70) = 0; //disable air dash
 		break;
 	case 12:
-		*(int*)(pointer + 0x12A64) = 0; //disable land dash
+		*(int*)(pointer + 0x12A74) = 0; //disable land dash
 		break;
 	case 13:
-		*(int*)(pointer + 0x12A68) = 0; //disable D-Pad items
+		*(int*)(pointer + 0x12A78) = 0; //disable D-Pad items
 		break;
 	case 14:
-		*(int*)(pointer + 0x12A6C) = 0; //disable leader switch
+		*(int*)(pointer + 0x12A7C) = 0; //disable leader switch
 		break;
 	case 15:
-		*(int*)(pointer + 0x12A70) = 0; //disable awakening
+		*(int*)(pointer + 0x12A80) = 0; //disable awakening
 		break;
 	case 16:
-		*(int*)(pointer + 0x12A74) = 0; //disable supports
+		*(int*)(pointer + 0x12A84) = 0; //disable supports
 		break;
 	case 17:
-		*(int*)(pointer + 0x12A80) = 0; //disable counter attack
+		*(int*)(pointer + 0x12A90) = 0; //disable counter attack
 		break;
 	}
 
@@ -828,58 +798,58 @@ void me_change_control_timed(__int64 char_p, int enemy, int control, float durat
 	// Disable the control (set value to 0)
 	switch (control) {
 	case 0:
-		*(int*)(pointer + 0x12A24) = 0; // disable PL_ANM_ATK
+		*(int*)(pointer + 0x12A34) = 0; // disable PL_ANM_ATK
 		break;
 	case 1:
-		*(int*)(pointer + 0x12A2C) = 0; // disable Ultimate Jutsu
+		*(int*)(pointer + 0x12A3C) = 0; // disable Ultimate Jutsu
 		break;
 	case 2:
-		*(int*)(pointer + 0x12A34) = 0; // disable Jutsu 1 and Jutsu 2
+		*(int*)(pointer + 0x12A44) = 0; // disable Jutsu 1 and Jutsu 2
 		break;
 	case 3:
-		*(int*)(pointer + 0x12A3C) = 0; // disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+		*(int*)(pointer + 0x12A4C) = 0; // disable PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
 		break;
 	case 4:
-		*(int*)(pointer + 0x12A44) = 0; // disable grab
+		*(int*)(pointer + 0x12A54) = 0; // disable grab
 		break;
 	case 5:
-		*(int*)(pointer + 0x12A48) = 0; // disable substitution jutsu
+		*(int*)(pointer + 0x12A58) = 0; // disable substitution jutsu
 		break;
 	case 6:
-		*(int*)(pointer + 0x12A4C) = 0; // disable guard
+		*(int*)(pointer + 0x12A5C) = 0; // disable guard
 		break;
 	case 7:
-		*(int*)(pointer + 0x12A50) = 0; // disable chakra load
+		*(int*)(pointer + 0x12A60) = 0; // disable chakra load
 		break;
 	case 8:
-		*(int*)(pointer + 0x12A54) = 0; // disable WASD and chakra
+		*(int*)(pointer + 0x12A64) = 0; // disable WASD and chakra
 		break;
 	case 9:
-		*(int*)(pointer + 0x12A58) = 0; // disable jump
+		*(int*)(pointer + 0x12A68) = 0; // disable jump
 		break;
 	case 10:
-		*(int*)(pointer + 0x12A5C) = 0; // disable ninja movement
+		*(int*)(pointer + 0x12A6C) = 0; // disable ninja movement
 		break;
 	case 11:
-		*(int*)(pointer + 0x12A60) = 0; // disable air dash
+		*(int*)(pointer + 0x12A70) = 0; // disable air dash
 		break;
 	case 12:
-		*(int*)(pointer + 0x12A64) = 0; // disable land dash
+		*(int*)(pointer + 0x12A74) = 0; // disable land dash
 		break;
 	case 13:
-		*(int*)(pointer + 0x12A68) = 0; // disable D-Pad items
+		*(int*)(pointer + 0x12A78) = 0; // disable D-Pad items
 		break;
 	case 14:
-		*(int*)(pointer + 0x12A6C) = 0; // disable leader switch
+		*(int*)(pointer + 0x12A7C) = 0; // disable leader switch
 		break;
 	case 15:
-		*(int*)(pointer + 0x12A70) = 0; // disable awakening
+		*(int*)(pointer + 0x12A80) = 0; // disable awakening
 		break;
 	case 16:
-		*(int*)(pointer + 0x12A74) = 0; // disable supports
+		*(int*)(pointer + 0x12A84) = 0; // disable supports
 		break;
 	case 17:
-		*(int*)(pointer + 0x12A80) = 0; // disable counter attack
+		*(int*)(pointer + 0x12A90) = 0; // disable counter attack
 		break;
 	}
 
@@ -891,58 +861,58 @@ void me_change_control_timed(__int64 char_p, int enemy, int control, float durat
 		// Restore the control (set value back to 1)
 		switch (control) {
 		case 0:
-			*(int*)(pointer + 0x12A24) = 1; // restore PL_ANM_ATK
+			*(int*)(pointer + 0x12A34) = 1; // restore PL_ANM_ATK
 			break;
 		case 1:
-			*(int*)(pointer + 0x12A2C) = 1; // restore Ultimate Jutsu
+			*(int*)(pointer + 0x12A3C) = 1; // restore Ultimate Jutsu
 			break;
 		case 2:
-			*(int*)(pointer + 0x12A34) = 1; // restore Jutsu 1 and Jutsu 2
+			*(int*)(pointer + 0x12A44) = 1; // restore Jutsu 1 and Jutsu 2
 			break;
 		case 3:
-			*(int*)(pointer + 0x12A3C) = 1; // restore PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
+			*(int*)(pointer + 0x12A4C) = 1; // restore PL_ANM_PRJ_LAND and PL_ANM_PRJ_ATK
 			break;
 		case 4:
-			*(int*)(pointer + 0x12A44) = 1; // restore grab
+			*(int*)(pointer + 0x12A54) = 1; // restore grab
 			break;
 		case 5:
-			*(int*)(pointer + 0x12A48) = 1; // restore substitution jutsu
+			*(int*)(pointer + 0x12A58) = 1; // restore substitution jutsu
 			break;
 		case 6:
-			*(int*)(pointer + 0x12A4C) = 1; // restore guard
+			*(int*)(pointer + 0x12A5C) = 1; // restore guard
 			break;
 		case 7:
-			*(int*)(pointer + 0x12A50) = 1; // restore chakra load
+			*(int*)(pointer + 0x12A60) = 1; // restore chakra load
 			break;
 		case 8:
-			*(int*)(pointer + 0x12A54) = 1; // restore WASD and chakra
+			*(int*)(pointer + 0x12A64) = 1; // restore WASD and chakra
 			break;
 		case 9:
-			*(int*)(pointer + 0x12A58) = 1; // restore jump
+			*(int*)(pointer + 0x12A68) = 1; // restore jump
 			break;
 		case 10:
-			*(int*)(pointer + 0x12A5C) = 1; // restore ninja movement
+			*(int*)(pointer + 0x12A6C) = 1; // restore ninja movement
 			break;
 		case 11:
-			*(int*)(pointer + 0x12A60) = 1; // restore air dash
+			*(int*)(pointer + 0x12A70) = 1; // restore air dash
 			break;
 		case 12:
-			*(int*)(pointer + 0x12A64) = 1; // restore land dash
+			*(int*)(pointer + 0x12A74) = 1; // restore land dash
 			break;
 		case 13:
-			*(int*)(pointer + 0x12A68) = 1; // restore D-Pad items
+			*(int*)(pointer + 0x12A78) = 1; // restore D-Pad items
 			break;
 		case 14:
-			*(int*)(pointer + 0x12A6C) = 1; // restore leader switch
+			*(int*)(pointer + 0x12A7C) = 1; // restore leader switch
 			break;
 		case 15:
-			*(int*)(pointer + 0x12A70) = 1; // restore awakening
+			*(int*)(pointer + 0x12A80) = 1; // restore awakening
 			break;
 		case 16:
-			*(int*)(pointer + 0x12A74) = 1; // restore supports
+			*(int*)(pointer + 0x12A84) = 1; // restore supports
 			break;
 		case 17:
-			*(int*)(pointer + 0x12A80) = 1; // restore counter attack
+			*(int*)(pointer + 0x12A90) = 1; // restore counter attack
 			break;
 		}
 		}).detach(); // Detach the thread to run independently

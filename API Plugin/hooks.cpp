@@ -107,10 +107,10 @@ void plugin::hookall() {
 		condition::cancelUpgradeFunctionState = 0;
 
 
-		cout << "MotionBlurManager :: Fix Upgrade Function" << endl;
-		__int64 fixUpgradeAddress1 = PatternScan::Scan("8B879C0E0000");
-		__int64 fixUpgradeAddress2 = PatternScan::Scan("8B879C0E0000", fixUpgradeAddress1 + 6);
-		__int64 fixUpgradeAddress3 = PatternScan::Scan("8B879C0E0000", fixUpgradeAddress2 + 6);
+		cout << "MovesetPlus :: Fix Upgrade Function" << endl; //find sub_1409B94C0 in 1.50 exe and find 112 characode (5mdr). its some switch value
+		__int64 fixUpgradeAddress1 = PatternScan::Scan("8B87A00E0000");
+		__int64 fixUpgradeAddress2 = PatternScan::Scan("8B87A00E0000", fixUpgradeAddress1 + 6);
+		__int64 fixUpgradeAddress3 = PatternScan::Scan("8B87A00E0000", fixUpgradeAddress2 + 6);
 		const std::array<std::uint8_t, 2> fixUpgradeBytes1{ 0x04, 0x00 };
 		util::memory::mem::write_bytes(fixUpgradeAddress3 + 2, fixUpgradeBytes1);
 
