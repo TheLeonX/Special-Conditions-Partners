@@ -36,6 +36,7 @@ public:
 	static __int64 SpecificStageHandlerAddress;
 	static __int64 CharacterCondition_funcAddress;
 	static __int64 FixCharPositionAddress;
+	static __int64 VTableAddress;
 
 	static __int64 OriginalStageAddress2;
 

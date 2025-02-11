@@ -418,13 +418,16 @@ __int64 MovesetPlus::HandleStageChangeAddress = 0;
 __int64 MovesetPlus::DefaultStageHandlerAddress = 0;
 __int64 MovesetPlus::SpecificStageHandlerAddress = 0;
 __int64 MovesetPlus::FixCharPositionAddress = 0;
+__int64 MovesetPlus::VTableAddress = 0;
 
 __int64 MovesetPlus::OriginalStageAddress2 = 0;
+
+
+
 
 int MovesetPlus::STAGE_ID;
 void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_param, __int64 character_pointer )
 {
-	__int64 enemy_pointer;
 	typedef signed  __int64(__fastcall* sub_1409B9FB0)(__int64 a1);
 	sub_1409B9FB0 sub_1409B9FB0_f = (sub_1409B9FB0)(MovesetPlus::EffectHandlerAddress); //Get Enemy Pointer instead of player pointer
 
@@ -440,25 +443,40 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 	typedef void(__fastcall* sub_140643C10)(__int64);
 	sub_140643C10 sub_140643C10_f = (sub_140643C10)(MovesetPlus::FixCharPositionAddress);
 
-	enemy_pointer = sub_1409B9FB0_f(character_pointer);
-	if (*(int*)(character_pointer + 0xEF8) == 0) {
+	//__int64(__fastcall * **__fastcall sub_141086E40(__int64 a1, __int64 a2))(void* Block)
+	typedef __int64(__fastcall* BlockFunc)(void* Block);
+	typedef BlockFunc* StageMoveVTable;
+	typedef StageMoveVTable(__fastcall* Sub_141086E40Type)(__int64, __int64);
 
-		*(int*)(character_pointer + 0xEF8) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
-		*(int*)(enemy_pointer + 0xEF8) = *(int*)(Common::GetQword(offset::stageOffset) + 8);
-	}
+	//&xmmword_1422FB990
+	__int64* pXmmword = reinterpret_cast<__int64*>(plugin::moduleBase + offset::VTableXmmwordOffset);
+
+	//*((__int64 *)&xmmword_1422FB990 + 1)
+	__int64 highPart = pXmmword[1];
+
+	Sub_141086E40Type sub_141086E40_f = reinterpret_cast<Sub_141086E40Type>(MovesetPlus::VTableAddress);
+
+	//v7 = (__int64)sub_141086E40(*((__int64 *)&xmmword_1422FB990 + 1), (__int64)"StageMove");
+	StageMoveVTable vtable = sub_141086E40_f(highPart, reinterpret_cast<__int64>("StageMove"));
+
+	//*(_QWORD *)(*(_QWORD *)(v7 + 8)
+	__int64 innerPointer = *reinterpret_cast<__int64*>(reinterpret_cast<char*>(vtable) + 8);
+
+	//*(_QWORD *)(*(_QWORD *)(v7 + 8) + 16i64);
+	__int64 v9 = *reinterpret_cast<__int64*>(reinterpret_cast<char*>(reinterpret_cast<void*>(innerPointer)) + 16);
+
+	
 	if (param2 == 0) {
-		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, crc32((std::string)string_param)); // Specific stage handler << endl;
+		sub_1406F6830_f(v9, crc32((std::string)string_param));
 	}
 	else {
-		sub_1406F6830_f(Common::GetQword(offset::stageOffset) + 8, *(int*)(character_pointer + 0xEF8)); // Specific stage handler
+		sub_1406F6800_f(v9);
 	}
-
-	cout << "Original Stage1: " << *(int*)(character_pointer + 0xEF8) << endl;
-	cout << "Original Stage2: " << *(int*)(enemy_pointer + 0xEF8) << endl;
 	cout << "Hash Stage: " << *(int*)(Common::GetQword(offset::stageOffset) + 8) << endl;
 
 	sub_1408EAE00_f(*(int*)(Common::GetQword(offset::stageOffset) + 8));
 
+	__int64 enemy_pointer = sub_1409B9FB0_f(character_pointer);
 	sub_140643C10_f(character_pointer);
 	sub_140643C10_f(enemy_pointer);
 }

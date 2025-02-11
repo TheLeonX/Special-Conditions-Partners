@@ -48,6 +48,10 @@ void plugin::hookall() {
 
 		MovesetPlus::OriginalStageAddress2 = PatternScan::Scan("48xxxxxxxx5748xxxxxx8Bxxxxxxxxxx48xxxx65xxxxxxxxxxxxxxxx48xxxxB9xxxxxxxx4Dxxxxxx42xxxxxx39xxxxxxxxxx7Fxx");
 		MovesetPlus::FixCharPositionAddress = PatternScan::Scan("48xxxx48xxxxxx48xxxxxx48xxxxxx5541xx41xx41xx41xx48xxxxxxxxxxxx48xxxxxxxxxxxx0Fxxxxxx0Fxxxxxx44xxxxxxxx44xxxxxxxx44xxxxxxxx48xxxxxxxxxxxx48xxxx48xxxxxxxxxxxx4Cxxxx33xx89xxxxxx48xxxxxxxxxxxx45xxxxxx");
+
+		MovesetPlus::VTableAddress = PatternScan::Scan("48xxxxxxxx5748xxxxxx8Bxxxxxxxxxx48xxxx65xxxxxxxxxxxxxxxx48xxxxB9xxxxxxxx4Dxxxxxx42xxxxxx39xxxxxxxxxx7Fxx48xxxxE8xxxxxxxx48xxxxxx4Cxxxx");
+		
+		
 		plugin::Hook((void*)(movesetPlusFunctionAddress), MovesetPlus::meTest, 16);
 
 	}
@@ -351,6 +355,7 @@ void plugin::hookall() {
 		plugin::Hook((void*)(debug_str_address), condition::sub_1412528C0, 15);
 	}
 }
+
 
 
 bool plugin::Hook(void* toHook, void* ourFunct, int len, bool isPlugin)
