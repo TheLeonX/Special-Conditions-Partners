@@ -1,10 +1,8 @@
 #include "MovesetPlus.h"
-#include "Main.h"
 #include <iostream>
 #include <vector>
 
 #include <WinSock2.h>
-#include "PatternScan.h"
 #include <windows.h>
 #include <future>
 #include <iostream>
@@ -14,6 +12,8 @@
 #include <format>
 #include "Common.h"
 #include "Offsets.h"
+#include "PatternScan.h"
+#include "Main.h"
 
 #include <cmath> // For fabs (absolute value for floats)
 #include <cstdint>

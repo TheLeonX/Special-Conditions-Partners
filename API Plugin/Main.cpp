@@ -6,7 +6,9 @@
 #include <fstream>
 #include "hooks.h"
 #include "condition.h"
+#include "TeamUltimateJutsuManager.h"
 #include <Psapi.h>
+#include "PatternScan.h"
 using namespace std;
 std::string GetExeFileName()
 {
@@ -18,29 +20,39 @@ std::string GetExeFileName()
 // This function is called when booting the game. In the modding api, 0xC00 is added to the module base by default. In my modified code, I am removing it.
 void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
 {
-	std::string f = GetExeFileName();
-	std::string e = f.substr(0, f.length() - 10) + "moddingapi\\mods\\base_game\\";
-	plugin::moduleBase = a - 0xC00;
-	MODULEINFO mInfo;
-	GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &mInfo, sizeof(MODULEINFO));
-	plugin::moduleLength = mInfo.SizeOfImage;
+    std::string f = GetExeFileName();
+    std::string e = f.substr(0, f.length() - 10) + "moddingapi\\mods\\base_game\\";
+    plugin::moduleBase = a - 0xC00;
+    MODULEINFO mInfo;
+    GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &mInfo, sizeof(MODULEINFO));
+    plugin::moduleLength = mInfo.SizeOfImage;
 
-	condition::InitialScan();
-	std::ifstream af(e + "specialCondParam.xfbin");
-	af.is_open();
-	bool test = af.good();
-	if (test) {
-		condition::ReadSpecialConditionParam(e + "specialCondParam.xfbin");
-	}
-	std::ifstream af_partner(e + "partnerSlotParam.xfbin");
-	af_partner.is_open();
-	bool test_partner = af_partner.good();
-	if (test_partner) {
-		condition::ReadPartnerSlotParam(e + "partnerSlotParam.xfbin");
-	}
+    condition::InitialScan();
+    std::ifstream af(e + "specialCondParam.xfbin");
+    af.is_open();
+    bool test = af.good();
+    if (test)
+    {
+        condition::ReadSpecialConditionParam(e + "specialCondParam.xfbin");
+    }
+    std::ifstream af_partner(e + "partnerSlotParam.xfbin");
+    af_partner.is_open();
+    bool test_partner = af_partner.good();
+    if (test_partner)
+    {
+        condition::ReadPartnerSlotParam(e + "partnerSlotParam.xfbin");
+    }
+    std::ifstream af_pair(e + "pairSpSkillManagerParam.xfbin");
+    af_pair.is_open();
+    bool test_pair = af_pair.good();
+    if (test_pair)
+    {
+        TUJManager::ReadPairSpSkillManagerParam(e + "pairSpSkillManagerParam.xfbin");
+    }
 
-
+    TUJManager::ExpandTeamUltimateArray();
 }
+
 
 // This function adds commands to the API's console.
 void __stdcall InitializeCommands(__int64 a, __int64 addCommandFunctionAddress)

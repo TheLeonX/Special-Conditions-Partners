@@ -15,7 +15,7 @@ __int64 condition::sub_1405C7EC0Adress = 0;
 __int64 condition::sub_1405C8F00Adress = 0;
 __int64 condition::sub_140978B00Adress = 0;
 
-std::vector<BYTE> ReadAllBytes(std::string _file)
+std::vector<BYTE> condition::ReadAllBytes(std::string _file)
 {
 	std::ifstream f;
 	f.open(_file);
@@ -137,7 +137,7 @@ void condition::InitialScan()
 
 void condition::ReadPartnerSlotParam(std::string _file)
 {
-	std::vector<BYTE> fileBytes = ReadAllBytes(_file);
+	std::vector<BYTE> fileBytes = condition::ReadAllBytes(_file);
 
 	int slotCount = fileBytes.size() / 0x20;
 
@@ -193,7 +193,7 @@ void condition::ReadPartnerSlotParam(std::string _file)
 
 void condition::ReadSpecialConditionParam(std::string _file)
 {
-	std::vector<BYTE> fileBytes = ReadAllBytes(_file);
+	std::vector<BYTE> fileBytes = condition::ReadAllBytes(_file);
 
 	int slotCount = fileBytes.size() / 0x20;
 
@@ -471,4 +471,18 @@ void __fastcall condition::sub_1412528C0(const char* Format, ...) {
 		fflush(stdout);  // Ensure immediate output
 		OutputDebugStringW(WideCharStr);
 	}
+}
+
+
+void __fastcall condition::_DeleteExceptionPtr(struct __ExceptionPtr* const a1)
+{
+	typedef signed __int64(__fastcall* sub_1406619A0)(__int64);
+	sub_1406619A0 sub_1406619A0_f = (sub_1406619A0)(plugin::moduleBase + 0x6619A0);
+	typedef signed __int64(__fastcall* sub_140661780)(__int64* a1);
+	sub_140661780 sub_140661780_f = (sub_140661780)(plugin::moduleBase + 0x661780);
+
+	std::cout << "Address: " << std::hex << a1 << std::endl;
+
+	sub_1406619A0_f((__int64)a1);
+	sub_140661780_f((__int64*)a1);
 }

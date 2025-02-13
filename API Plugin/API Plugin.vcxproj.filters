@@ -29,6 +29,9 @@
     <ClCompile Include="mem.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="TeamUltimateJutsuManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -55,5 +58,11 @@
     <ClInclude Include="Offsets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TeamUltimateJutsuManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

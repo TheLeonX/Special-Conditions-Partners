@@ -55,4 +55,6 @@ public:
 	static bool __fastcall sub_14084FB90(unsigned int* a1);
 	static bool __fastcall CustomConditionFunction(__int64 a1);
 	static void __fastcall sub_1412528C0(const char* Format, ...);
+	static void __fastcall _DeleteExceptionPtr(struct __ExceptionPtr* const a1);
+	static std::vector<BYTE> ReadAllBytes(std::string _file);
 };

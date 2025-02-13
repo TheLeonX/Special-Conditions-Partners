@@ -354,6 +354,10 @@ void plugin::hookall() {
 	{
 		plugin::Hook((void*)(debug_str_address), condition::sub_1412528C0, 15);
 	}
+
+
+
+	//plugin::Hook((void*)(plugin::moduleBase + 0x660B60 + 0xC00), condition::_DeleteExceptionPtr, 14);
 }
 
 
