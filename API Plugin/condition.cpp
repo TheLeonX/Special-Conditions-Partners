@@ -381,18 +381,18 @@ __int64 __fastcall condition::UpgradeVerUnlocker(__int64 a1, __int64 a2) //977DD
 	sub_1405C8F00 sub_1405C8F00_f = (sub_1405C8F00)(condition::sub_1405C8F00Adress);
 
 
-	v2 = *(int*)(a1 + 3740);
-	*(int*)(a1 + 3740) = a2;
+	v2 = *(int*)(a1 + 3744);
+	*(int*)(a1 + 3744) = a2;
 	result = sub_14097F1E0_f((unsigned int*)a1, a2);
 	if (result)
 		result = sub_1405C3970_f(*(__int64**)(a1 + 520), *(__int64**)result, *(int*)(result + 8), *(__int64*)(a1 + 3672));
 	else
-		*(int*)(a1 + 3740) = v2;
+		*(int*)(a1 + 3744) = v2;
 	if (*(int*)(a1 + 520))
 	{
 		for (i = 0; i < 3; ++i)
-			result = sub_1405C7EC0_f(*(__int64*)(a1 + 520), i);
-		switch (*(int*)(a1 + 3740))
+			result = sub_1405C7EC0_f(*(__int64*)(a1 + 520), (unsigned int)i);
+		switch (*(int*)(a1 + 3744))
 		{
 		case 2:
 			condition::cancelUpgradeFunctionState = 0;
@@ -485,4 +485,10 @@ void __fastcall condition::_DeleteExceptionPtr(struct __ExceptionPtr* const a1)
 
 	sub_1406619A0_f((__int64)a1);
 	sub_140661780_f((__int64*)a1);
+}
+
+
+__int64 __fastcall condition::SkipIntroFunction(__int64 a1, int a2)
+{
+	return 1i64;
 }

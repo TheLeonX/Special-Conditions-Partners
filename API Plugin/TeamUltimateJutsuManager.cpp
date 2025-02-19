@@ -314,22 +314,22 @@ void TUJManager::ExpandTeamUltimateArray() {
     __int64 TUJ_Address2 = PatternScan::Scan("48xxxxxx4Cxxxxxx48xxxxxx49xxxx74xx39xxxx74xx48xxxxxx49xxxx75xx33xx48xxxxxxC348xxxxxx48xxxxxxxx48xxxxxxxx83xxxx77xx48xxxx48xxxxxxxxxxxx48xxxx8Bxxxxxx8Bxxxxxx83xxxx74xxE8xxxxxxxx3Bxx7Cxx48xxxxxxxxxxxx");
     __int64 TUJ_CountAddress2 = PatternScan::Scan("83xx"+ std::string(hexTUJCount) + "77xx49xxxx", TUJ_Address2) + 2;
     util::memory::mem::write_bytes(TUJ_CountAddress2, TUJCountByte);
-    std::cout << "0x" << std::hex << TUJ_CountAddress2 << std::dec << std::endl;
+    //std::cout << "0x" << std::hex << TUJ_CountAddress2 << std::dec << std::endl;
 
     __int64 TUJ_Address3 = PatternScan::Scan("48xxxxxxxx48xxxxxxxx5748xxxxxx4Cxxxx48xxxx74xx33xx48xxxxxxxxxxxx44xxxx48xxxxxxxxxxxx4Cxxxx0Fxxxx4Dxxxx49xxxx4Dxxxx0Fxxxxxxxxxxxx0Fxxxx");
     __int64 TUJ_CountAddress3 = PatternScan::Scan("41xxxx" + std::string(hexTUJCount) + "77xx49xxxx", TUJ_Address3) + 3;
     util::memory::mem::write_bytes(TUJ_CountAddress3, TUJCountByte);
-    std::cout << "0x" << std::hex << TUJ_CountAddress3 << std::dec << std::endl;
+    //std::cout << "0x" << std::hex << TUJ_CountAddress3 << std::dec << std::endl;
 
     __int64 TUJ_Address4 = PatternScan::Scan("48xxxxxxxx5748xxxxxx83xxxx77xx48xxxxxxxxxxxx48xxxx48xxxx8Bxxxxxx8Bxxxxxx83xxxx74xxE8xxxxxxxx3Bxx7Cxx48xxxxxxxxxxxx8BxxE8xxxxxxxx85xx74xx");
     __int64 TUJ_CountAddress4 = PatternScan::Scan("83xx" + std::string(hexTUJCount) + "77xx48xxxxxxxxxxxx48xxxx", TUJ_Address4) + 2;
     util::memory::mem::write_bytes(TUJ_CountAddress4, TUJCountByte);
-    std::cout << "0x" << std::hex << TUJ_CountAddress4 << std::dec << std::endl;
+    //std::cout << "0x" << std::hex << TUJ_CountAddress4 << std::dec << std::endl;
 
     __int64 TUJ_Address5 = PatternScan::Scan("48xxxxxxxx5748xxxxxx48xxxxxx48xxxxxxxxxxxxxx48xxxxxxxx49xxxx48xxxx72xx48xxxx48xxxxxxxxxxxxC6xxxx48xxxxE8xxxxxxxx49xxxxxxxxxxxx9049xxxx");
     __int64 TUJ_CountAddress5 = PatternScan::Scan("B8" + std::string(hexTUJCount2) + "000000C3", TUJ_Address5) + 1;
     util::memory::mem::write_bytes(TUJ_CountAddress5, TUJCountByte2);
-    std::cout << "0x" << std::hex << TUJ_CountAddress5 << std::dec << std::endl;
+    //::cout << "0x" << std::hex << TUJ_CountAddress5 << std::dec << std::endl;
 
 
 

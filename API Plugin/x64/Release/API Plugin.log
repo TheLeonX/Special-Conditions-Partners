@@ -1,21 +1,14 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: промежуточный каталог (x64\Release\) содержит файлы, которые используются совместно с другим проектом (API Plugin.vcxproj).  Это может привести к ошибкам очистки и перестроения.
   Skipping vcpkg. (no packages)
 cl : командная строка  warning D9035: использование параметра "Gm" нежелательно, он будет удален в следующих выпусках
-  TeamUltimateJutsuManager.cpp
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(311,67): warning C4838: Преобразование из "int" в "_Ty" требует сужающего преобразования.
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(311,67): warning C4838:         with
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(311,67): warning C4838:         [
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(311,67): warning C4838:             _Ty=uint8_t
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(311,67): warning C4838:         ]
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(312,54): warning C4838: Преобразование из "int" в "_Ty" требует сужающего преобразования.
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(312,54): warning C4838:         with
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(312,54): warning C4838:         [
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(312,54): warning C4838:             _Ty=uint8_t
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\TeamUltimateJutsuManager.cpp(312,54): warning C4838:         ]
+  hooks.cpp
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(343,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(349,23): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(370,10): warning C4018: <: несоответствие типов со знаком и без знака
      Создается библиотека C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\x64\Release\Conditions.lib и объект C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\x64\Release\Conditions.exp
   Создание кода
-  2 of 826 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  1 of 825 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   API Plugin.vcxproj -> C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\x64\Release\Conditions.dll

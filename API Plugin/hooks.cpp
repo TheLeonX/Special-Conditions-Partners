@@ -357,7 +357,8 @@ void plugin::hookall() {
 
 
 
-	//plugin::Hook((void*)(plugin::moduleBase + 0x660B60 + 0xC00), condition::_DeleteExceptionPtr, 14);
+
+	//plugin::Hook((void*)(plugin::moduleBase + 0xAD1B50), condition::SkipIntroFunction, 15); //1.60
 }
 
 

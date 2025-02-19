@@ -57,4 +57,5 @@ public:
 	static void __fastcall sub_1412528C0(const char* Format, ...);
 	static void __fastcall _DeleteExceptionPtr(struct __ExceptionPtr* const a1);
 	static std::vector<BYTE> ReadAllBytes(std::string _file);
+	static __int64 __fastcall SkipIntroFunction(__int64 a1, int a2);
 };
