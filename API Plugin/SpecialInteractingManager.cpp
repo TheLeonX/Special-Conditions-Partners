@@ -87,8 +87,28 @@ void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
     size_t pos = 0;
     size_t fileSize = fileBytes.size();
 
-    while (pos + 8 <= fileSize) // at least 8 bytes for main id + count
+    // Verify that file contains at least 4 bytes for the total entry count.
+    if (fileSize < 4)
     {
+        condition::sub_1412528C0("SpecialInteractionManager :: Error: File too small: %s\n", _file.c_str());
+        return;
+    }
+
+    // Read total entry count.
+    int totalEntryCount = *reinterpret_cast<int*>(&fileBytes[pos]);
+    pos += 4;
+    condition::sub_1412528C0("SpecialInteractionManager :: Total entries: %d\n", totalEntryCount);
+
+    // Process each entry.
+    for (int entryIndex = 0; entryIndex < totalEntryCount; entryIndex++)
+    {
+        // Ensure there are at least 8 bytes for mainCharacter and triggerCount.
+        if (pos + 8 > fileSize)
+        {
+            condition::sub_1412528C0("SpecialInteractionManager :: Error: Not enough data for entry %d in file %s\n", entryIndex, _file.c_str());
+            break;
+        }
+
         // Read main character ID.
         int mainCharacter = *reinterpret_cast<int*>(&fileBytes[pos]);
         pos += 4;
@@ -99,14 +119,14 @@ void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
 
         if (triggerCount < 0 || pos + triggerCount * 4 > fileSize)
         {
-            condition::sub_1412528C0("SpecialInteractionManager :: Error: Invalid trigger count (%d) at pos %zu in file %s\n",
-                triggerCount, pos, _file.c_str());
+            condition::sub_1412528C0("SpecialInteractionManager :: Error: Invalid trigger count (%d) for entry %d at pos %zu in file %s\n",
+                triggerCount, entryIndex, pos, _file.c_str());
             break;
         }
 
         if (mainCharacter == 0)
         {
-            condition::sub_1412528C0("SpecialInteractionManager :: Error loading entry at pos %zu - main character ID is 0.\n", pos);
+            condition::sub_1412528C0("SpecialInteractionManager :: Error: Main character ID is 0 for entry %d at pos %zu.\n", entryIndex, pos);
             pos += triggerCount * 4;
             continue;
         }
@@ -127,8 +147,8 @@ void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
         specialInteraction::specialInteractionList.push_back(newEntry);
 
         // Log the loaded entry.
-        condition::sub_1412528C0("SpecialInteraction Entry loaded: { mainCharacter = 0x%X, count = %d, triggers = ",
-            mainCharacter, triggerCount);
+        condition::sub_1412528C0("SpecialInteraction Entry %d loaded: { mainCharacter = 0x%X, count = %d, triggers = ",
+            entryIndex, mainCharacter, triggerCount);
         for (int trigger : newEntry->triggerList)
         {
             condition::sub_1412528C0("0x%X ", trigger);
@@ -136,6 +156,7 @@ void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
         condition::sub_1412528C0("}\n");
     }
 }
+
 
 
 
