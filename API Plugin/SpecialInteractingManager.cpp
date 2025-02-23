@@ -140,20 +140,13 @@ void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
 
 
 
-bool __fastcall SpecialInteractionManager::SpecialInteractionSoundFunction(__int64 a1) //sub_140A15A00
+bool __fastcall SpecialInteractionManager::SpecialInteractionSoundFunction(__int64 a1) // sub_140A15A00
 {
-    //cout << "SpecialInteractionManager :: Sounds Hooked!" << endl;
-
-
-
     typedef signed __int64(__fastcall* sub_1409BB1B0)(__int64 a1);
     sub_1409BB1B0 sub_1409BB1B0_f = (sub_1409BB1B0)(SpecialInteractionManager::sub_1409BB1B0Adress);
 
-
-
-
     int mainCharId = *(int*)(a1 + 0xE64);
-    bool triggered = 0;
+    bool triggered = false;
     int mode = *(unsigned int*)(a1 + 0xE80);
 
     // Look up a special interaction entry for the current main character.
@@ -175,12 +168,12 @@ bool __fastcall SpecialInteractionManager::SpecialInteractionSoundFunction(__int
         if (enemyPtr)
             enemyId = *(int*)(enemyPtr + 0xE64);
 
-        // Check if enemyId is in the trigger list for this entry.
-        for (int i = 0; i < 30; i++)
+        // Check if enemyId is in the trigger list for this entry (using dynamic iteration).
+        for (int trigger : entry->triggerList)
         {
-            if (entry->triggerList[i] != 0 && entry->triggerList[i] == enemyId)
+            if (trigger != 0 && trigger == enemyId)
             {
-                triggered = 1;
+                triggered = true;
                 break;
             }
         }
@@ -200,18 +193,18 @@ bool __fastcall SpecialInteractionManager::SpecialInteractionSoundFunction(__int
             if (mainCharId == 36)
             {
                 if ((unsigned int)SpecialInteractionManager::SpecialInteractionKarin(a1, enemyId))
-                    triggered = 1;
+                    triggered = true;
             }
             else if (SpecialInteractionManager::SpecialInteractionHinata(a1, enemyId))
             {
-                triggered = 1;
+                triggered = true;
             }
         }
         break;
         case 1:
         case 3:
             if (mode == 1)
-                triggered = 1;
+                triggered = true;
             break;
         case 56:
             triggered = (mode == 1);
@@ -222,6 +215,7 @@ bool __fastcall SpecialInteractionManager::SpecialInteractionSoundFunction(__int
     }
     return triggered;
 }
+
 
 __int64 __fastcall SpecialInteractionManager::SpecialInteractionKarin(__int64 a1, int a2) // Karin and Sasuke
 {
@@ -313,9 +307,9 @@ __int64 __fastcall SpecialInteractionManager::SpecialInteractionUJChanger(__int6
                     if (enemyPtr)
                         enemyChar = *(int*)(enemyPtr + 3684);
                     bool fileTriggered = false;
-                    for (int i = 0; i < 30; i++)
+                    for (int trigger : entry->triggerList)
                     {
-                        if (entry->triggerList[i] != 0 && entry->triggerList[i] == enemyChar)
+                        if (trigger != 0 && trigger == enemyChar)
                         {
                             fileTriggered = true;
                             break;
@@ -465,9 +459,9 @@ __int64 __fastcall SpecialInteractionManager::SpecialInteractionFunction2(__int6
         // If a special interaction entry exists, check the trigger list
         if (entry)
         {
-            for (int i = 0; i < 30; i++)
+            for (int trigger : entry->triggerList)
             {
-                if (entry->triggerList[i] == enemyId && entry->triggerList[i] != 0)
+                if (trigger != 0 && trigger == enemyId)
                 {
                     triggered = true;
                     break;
@@ -589,9 +583,9 @@ __int64 __fastcall SpecialInteractionManager::AdjustSpecialInteractionValue(__in
         {
             if (a2 >= 700 && a2 <= 916) {
                 // If an entry exists, check the trigger list for adjustments
-                for (int i = 0; i < 30; i++)
+                for (int trigger : entry->triggerList)
                 {
-                    if (entry->triggerList[i] == enemyId)
+                    if (trigger == enemyId)
                         return a2 + 42;
                 }
 
