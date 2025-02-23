@@ -10,6 +10,7 @@
 #include "mem.h"
 #include "PatternScan.h"
 #include "Thirdparty/MinHook.h"
+#include "SpecialInteractingManager.h"
 using namespace std;
 
 //Use minhook to hook all functions here.
@@ -359,6 +360,28 @@ void plugin::hookall() {
 
 
 	//plugin::Hook((void*)(plugin::moduleBase + 0xAD1B50), condition::SkipIntroFunction, 15); //1.60
+
+	//SpecialInteraction UJ
+	__int64 specialInteractionChangerAddress = PatternScan::Scan("48xxxxxxxx48xxxxxxxx5741xx41xx48xxxxxx8Bxxxxxxxxxx33xx41xxxx8Bxx4Cxxxx44xxxx83xxxx74xx3Dxxxxxxxx75xx81xxxxxxxxxx75xx48xxxxxxxxxxxx48xxxx74xx8BxxE8xxxxxxxx4Cxxxx48xxxx0Fxxxxxxxxxx85xx");
+	if (specialInteractionChangerAddress > 1) {
+		SpecialInteractionManager::sub_1409BB1B0Adress = PatternScan::Scan("40xx48xxxxxx48xxxx33xxFFxxxx3Bxxxxxxxxxx74xx48xxxxxxxxxxxx4Cxxxxxx49xxxx49xxxxxx38xxxx75xx0Fxxxx39xxxx73xx48xxxxxxEBxx48xxxx48xxxx38xxxx74xx38xxxx");
+		cout << "SpecialInteractionManager :: Initializing" << endl;
+		plugin::Hook((void*)(specialInteractionChangerAddress), SpecialInteractionManager::SpecialInteractionUJChanger, 15);
+		//cout << "SpecialInteractionManager :: Initializing Sounds" << endl;
+		__int64 specialInteractionSoundAddress = PatternScan::Scan("48xxxxxxxx48xxxxxxxx48xxxxxxxx48xxxxxxxx41xx48xxxxxx8Bxxxxxxxxxx48xxxx33xxE8xxxxxxxx8Bxx83xxxx74xx83xxxx75xx48xxxx44xxxxE8xxxxxxxx48xxxx74xx44xxxxxxxxxxxx83xxxx75xx41xxxx48xxxxE8xxxxxxxx85xx74xx8Dxxxx");
+		plugin::Hook((void*)(specialInteractionSoundAddress), SpecialInteractionManager::SpecialInteractionSoundFunction, 15);
+		
+		cout << "SpecialInteractionManager :: Initializing Sounds" << endl;
+		__int64 specialInteractionSound2Address = PatternScan::Scan("48xxxxxxxx5748xxxxxx48xxxx33xxE8xxxxxxxx48xxxx0Fxxxxxxxxxx8Bxxxxxxxxxx8Bxxxxxxxxxx83xxxx74xx83xxxx74xx83xxxx74xx83xxxx75xx48xxxxE8xxxxxxxx85xx74xxBBxxxxxxxx8Bxx48xxxxxxxx48xxxxxx5FC348xxxx");
+		plugin::Hook((void*)(specialInteractionSound2Address), SpecialInteractionManager::SpecialInteractionFunction2, 15);
+
+		cout << "SpecialInteractionManager :: Initializing PRM Function" << endl;
+		__int64 specialInteractionPRMFunctionAddress = PatternScan::Scan("48xxxxxxxx48xxxxxxxx41xx48xxxxxx8Dxxxxxxxxxx8Bxx4Cxxxx8Bxx3Dxxxxxxxx0Fxxxxxxxxxx48xxxxxxxxE8xxxxxxxx83xxxx75xx8Dxxxx49xxxxE8xxxxxxxx83xxxx75xx8Dxxxx49xxxxE8xxxxxxxx83xxxx75xx8Dxxxxxxxxxx41xxxxxxxxxxxx");
+		plugin::Hook((void*)(specialInteractionPRMFunctionAddress), SpecialInteractionManager::AdjustSpecialInteractionValue, 16);
+
+
+
+	}
 }
 
 

@@ -9,6 +9,7 @@
 #include "TeamUltimateJutsuManager.h"
 #include <Psapi.h>
 #include "PatternScan.h"
+#include "SpecialInteractingManager.h"
 using namespace std;
 std::string GetExeFileName()
 {
@@ -51,6 +52,14 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
     }
 
     TUJManager::ExpandTeamUltimateArray();
+
+    std::ifstream af_specialInteraction(e + "specialInteractionManager.xfbin");
+    af_specialInteraction.is_open();
+    bool test_specialInteraction = af_specialInteraction.good();
+    if (test_specialInteraction)
+    {
+        SpecialInteractionManager::ReadSpecialInteractionParam(e + "specialInteractionManager.xfbin");
+    }
 }
 
 
