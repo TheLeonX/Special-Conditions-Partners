@@ -11,6 +11,7 @@
 #include "PatternScan.h"
 #include "Thirdparty/MinHook.h"
 #include "SpecialInteractingManager.h"
+#include "ConditionPrmManager.h"
 using namespace std;
 
 //Use minhook to hook all functions here.
@@ -382,6 +383,43 @@ void plugin::hookall() {
 
 
 	}
+
+	//conditionprm
+	__int64 conditionprmAddress = PatternScan::Scan("8Dxxxx3DFB01000077xx48xxxx48xxxxxxxxxxxx48xxxxxx48xxxxC333xxC3");
+	if (conditionprmAddress > 1) {
+
+		
+
+		plugin::Hook((void*)(conditionprmAddress), ConditionPrmManager::GetConditionEntry, 20);
+
+		__int64 conditionprmAddress1 = PatternScan::Scan("4Cxxxxxx4Dxxxx74xx81xxFC01000077xx48xxxx48xxxxxxxxxxxx49xxxxC333xxC3");
+		__int64 conditionprmAddress1_2 = PatternScan::Scan("FC010000", conditionprmAddress1);
+		const std::array<std::uint8_t, 4> conditionBytes1{
+		   static_cast<std::uint8_t>((g_ConditionEntries.size() - 1) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size() - 1) >> 8) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size() - 1) >> 16) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size() - 1) >> 24) & 0xFF)
+		};
+		const std::array<std::uint8_t, 4> conditionBytes2{
+		   static_cast<std::uint8_t>((g_ConditionEntries.size()) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size()) >> 8) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size()) >> 16) & 0xFF),
+		   static_cast<std::uint8_t>(((g_ConditionEntries.size()) >> 24) & 0xFF)
+		};
+		util::memory::mem::write_bytes(conditionprmAddress1_2, conditionBytes1);
+
+
+		__int64 conditionprmAddress2 = PatternScan::Scan("48xxxxxxxx5748xxxxxx8Bxx33xx66xx8BxxE8xxxxxxxx48xxxx74xx48xxxx48xxxx74xxE8xxxxxxxx3Bxx74xxFFxx81xxFD0100007Cxx33xx48xxxxxxxx48xxxxxx5FC38Bxx48xxxxxxxx48xxxxxx5FC3");
+		__int64 conditionprmAddress2_2 = PatternScan::Scan("FD010000", conditionprmAddress2);
+		__int64 conditionprmAddress2_3 = PatternScan::Scan("FD010000", conditionprmAddress2_2 + 4);
+		__int64 conditionprmAddress2_4 = PatternScan::Scan("FD010000", conditionprmAddress2_3 + 4);
+
+		cout << conditionprmAddress2 << endl;
+		util::memory::mem::write_bytes(conditionprmAddress2_2, conditionBytes2);
+		util::memory::mem::write_bytes(conditionprmAddress2_3, conditionBytes2);
+		util::memory::mem::write_bytes(conditionprmAddress2_4, conditionBytes2);
+	}
+
 }
 
 

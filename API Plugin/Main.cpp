@@ -10,6 +10,7 @@
 #include <Psapi.h>
 #include "PatternScan.h"
 #include "SpecialInteractingManager.h"
+#include "ConditionPrmManager.h"
 using namespace std;
 std::string GetExeFileName()
 {
@@ -59,6 +60,14 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
     if (test_specialInteraction)
     {
         SpecialInteractionManager::ReadSpecialInteractionParam(e + "specialInteractionManager.xfbin");
+    }
+
+    std::ifstream af_conditionprm(e + "conditionprmManager.xfbin");
+    af_conditionprm.is_open();
+    bool test_conditionprm = af_conditionprm.good();
+    if (test_conditionprm)
+    {
+        ConditionPrmManager::ReadConditionEntries(e + "conditionprmManager.xfbin");
     }
 }
 

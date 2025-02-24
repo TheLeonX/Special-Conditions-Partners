@@ -35,6 +35,9 @@
     <ClCompile Include="SpecialInteractingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConditionPrmManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -65,6 +68,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpecialInteractingManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionPrmManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

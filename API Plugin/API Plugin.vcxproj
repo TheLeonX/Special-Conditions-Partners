@@ -137,6 +137,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConditionPrmManager.cpp" />
     <ClCompile Include="hooks.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="condition.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="ConditionPrmManager.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="condition.h" />
