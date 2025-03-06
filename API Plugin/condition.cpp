@@ -492,3 +492,4 @@ __int64 __fastcall condition::SkipIntroFunction(__int64 a1, int a2)
 {
 	return 1i64;
 }
+

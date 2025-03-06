@@ -11,6 +11,7 @@
 #include "PatternScan.h"
 #include "SpecialInteractingManager.h"
 #include "ConditionPrmManager.h"
+#include "PlAnmExpander.h"
 using namespace std;
 std::string GetExeFileName()
 {
@@ -51,6 +52,14 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
     {
         TUJManager::ReadPairSpSkillManagerParam(e + "pairSpSkillManagerParam.xfbin");
     }
+    /*PlAnmExpander::ExpandStringArray();
+    std::ifstream af_planm(e + "plAnmExpanderParam.xfbin");
+    af_planm.is_open();
+    bool test_planm = af_planm.good();
+    if (test_planm)
+    {
+        PlAnmExpander::ReadPlAnmExpander(e + "plAnmExpanderParam.xfbin");
+    }*/
 
     TUJManager::ExpandTeamUltimateArray();
 

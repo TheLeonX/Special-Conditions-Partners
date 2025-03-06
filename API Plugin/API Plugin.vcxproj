@@ -144,6 +144,7 @@
     <ClCompile Include="mem.h" />
     <ClCompile Include="MovesetPlus.cpp" />
     <ClCompile Include="PatternScan.cpp" />
+    <ClCompile Include="PlAnmExpander.cpp" />
     <ClCompile Include="SpecialInteractingManager.cpp" />
     <ClCompile Include="TeamUltimateJutsuManager.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="MovesetPlus.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="PatternScan.h" />
+    <ClInclude Include="PlAnmExpander.h" />
     <ClInclude Include="SpecialInteractingManager.h" />
     <ClInclude Include="TeamUltimateJutsuManager.h" />
     <ClInclude Include="Thirdparty\MinHook.h" />

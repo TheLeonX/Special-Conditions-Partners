@@ -27,7 +27,7 @@ struct TeamUltimateEntry {
 int g_NewTUJCount = 0;
 //------------------------------------------------------------------------------
 
-uintptr_t OFFSET_TEAM_ULT_ARRAY = offset::OFFSET_TEAM_ULT_ARRAY; // »сходное местоположение статического массива
+uintptr_t OFFSET_TEAM_ULT_ARRAY = offset::OFFSET_TEAM_ULT_ARRAY; // »сходное местоположение статического массива off_1418B2470
 int ORIGINAL_COUNT = offset::ORIGINAL_COUNT_TEAM_ULT_ARRAY;
 //constexpr int NEW_COUNT = 58;
 
