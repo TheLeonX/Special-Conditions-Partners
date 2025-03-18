@@ -9,6 +9,8 @@
 #include "condition.h"
 #include "Main.h"
 #include "Offsets.h"
+#include <iostream>
+using namespace std;
 
 // Structure for a BGM list entry.
 struct BGMEntry {
@@ -219,7 +221,7 @@ public:
         }
         size_t recordSize = 0x68;
         if (fileBytes.size() < recordSize) {
-            condition::sub_1412528C0("Invalid file size: 0x%X, 0x%X bytes for %s\n",
+            condition::sub_1412528C0("Invalid file size: 0x%X, expected at least 0x%X bytes for %s\n",
                 static_cast<unsigned int>(fileBytes.size()), recordSize, filename.c_str());
             return;
         }
@@ -232,7 +234,7 @@ public:
         uint64_t bgmFuncAddress = 0;
         if (BGMExpander::ORIGINAL_COUNT > 0)
             bgmFuncAddress = BGMExpander::g_pNewBGMArray[BGMExpander::ORIGINAL_COUNT - 1].bgmFunc;
-        int currentCount = BGMExpander::GetCurrentBGMCount();
+
         for (int i = 0; i < numEntries; i++) {
             int offset = i * recordSize;
             char stageNameBuffer[0x31] = { 0 };
@@ -243,11 +245,16 @@ public:
             stageSoundBuffer[0x30] = '\0';
             int bgmId = *reinterpret_cast<int*>(&fileBytes[offset + 0x60]);
             int unknown = *reinterpret_cast<int*>(&fileBytes[offset + 0x64]);
-            int crc = plugin::api::crc32(std::string(stageNameBuffer));
+
+            // Use the stage name as-is.
+            std::string stageName(stageNameBuffer);
+            int crc = plugin::api::crc32(stageName);
+
             size_t soundLen = strnlen(stageSoundBuffer, 0x30);
             char* newStageSoundStr = new char[soundLen + 1];
             memcpy(newStageSoundStr, stageSoundBuffer, soundLen);
             newStageSoundStr[soundLen] = '\0';
+
             BGMEntry newEntry;
             newEntry.crc32 = static_cast<uint32_t>(crc);
             newEntry.bgmId = bgmId;
@@ -255,24 +262,42 @@ public:
             newEntry.padding = 0;
             newEntry.bgmFunc = bgmFuncAddress;
             newEntry.stageSoundStr = reinterpret_cast<uint64_t>(newStageSoundStr);
-            if (currentCount >= BGMExpander::g_NewBGMCountAllocated - 1) {
-                condition::sub_1412528C0("Not enough space for custom BGM entry at index %d\n", currentCount);
-                break;
+
+            bool replaced = false;
+            // Get the current count dynamically.
+            int currentCount = BGMExpander::GetCurrentBGMCount();
+            for (int j = 0; j < currentCount; j++) {
+                if (BGMExpander::g_pNewBGMArray[j].crc32 == newEntry.crc32) {
+                    BGMExpander::g_pNewBGMArray[j] = newEntry;
+                    condition::sub_1412528C0("Replaced existing entry at index %d: CRC32=0x%X, BGM ID=%d\n",
+                        j, newEntry.crc32, newEntry.bgmId);
+                    replaced = true;
+                    break;
+                }
             }
-            BGMExpander::g_pNewBGMArray[currentCount] = newEntry;
-            condition::sub_1412528C0("Added custom BGM entry %d: CRC32=0x%X, BGM ID=%d\n",
-                currentCount, newEntry.crc32, newEntry.bgmId);
-            currentCount++;
+            if (!replaced) {
+                currentCount = BGMExpander::GetCurrentBGMCount();
+                if (currentCount >= BGMExpander::g_NewBGMCountAllocated - 1) {
+                    condition::sub_1412528C0("Not enough space for custom BGM entry at index %d\n", currentCount);
+                    break;
+                }
+                BGMExpander::g_pNewBGMArray[currentCount] = newEntry;
+                condition::sub_1412528C0("Added custom BGM entry %d: CRC32=0x%X, BGM ID=%d\n",
+                    currentCount, newEntry.crc32, newEntry.bgmId);
+            }
         }
         // Append termination marker.
-        BGMExpander::g_pNewBGMArray[currentCount].crc32 = 0xFFFFFFFF;
-        BGMExpander::g_pNewBGMArray[currentCount].bgmId = 0;
-        BGMExpander::g_pNewBGMArray[currentCount].unknown = 0;
-        BGMExpander::g_pNewBGMArray[currentCount].padding = 0;
-        BGMExpander::g_pNewBGMArray[currentCount].bgmFunc = 0;
-        BGMExpander::g_pNewBGMArray[currentCount].stageSoundStr = 0;
-        condition::sub_1412528C0("Custom BGM entries appended. New total entries: %d\n", currentCount);
+        int finalCount = BGMExpander::GetCurrentBGMCount();
+        BGMExpander::g_pNewBGMArray[finalCount].crc32 = 0xFFFFFFFF;
+        BGMExpander::g_pNewBGMArray[finalCount].bgmId = 0;
+        BGMExpander::g_pNewBGMArray[finalCount].unknown = 0;
+        BGMExpander::g_pNewBGMArray[finalCount].padding = 0;
+        BGMExpander::g_pNewBGMArray[finalCount].bgmFunc = 0;
+        BGMExpander::g_pNewBGMArray[finalCount].stageSoundStr = 0;
+        condition::sub_1412528C0("Custom BGM entries appended. New total entries: %d\n", finalCount);
     }
+
+
 
 
 };
