@@ -18,68 +18,73 @@ using namespace std;
 
 
 __int64 SpecialInteractionManager::sub_1409BB1B0Adress = 0;
+__int64 SpecialInteractionManager::sub_140AC49A0Adress = 0;
 // Assume this structure and global list exist and are filled by ReadSpecialInteractionParam:
 struct SpecialInteractionFramework {
     int mainCharacter;
     std::vector<int> triggerList;  // Используем std::vector<int> вместо массива int[30]
 };
 
+struct TeamJutsuEntry {
+    std::vector<int> triggerList;
+};
+
 
 namespace specialInteraction {
     std::vector<SpecialInteractionFramework*> specialInteractionList;
+    std::vector<TeamJutsuEntry*> teamJutsuList;
 }
 
-//void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
-//{
-//    std::vector<BYTE> fileBytes = condition::ReadAllBytes(_file);
-//
-//    // Each entry is 0x54 bytes.
-//    int entryCount = fileBytes.size() / 0x7C;
-//
-//    for (int x = 0; x < entryCount; x++)
-//    {
-//        int offset = 0x7C * x;
-//
-//        // Read the main character ID (first 4 bytes)
-//        int mainCharacter = *reinterpret_cast<int*>(&fileBytes[offset]);
-//
-//        // Read the trigger character IDs (20 entries from offset+4 to offset+0x54)
-//        int triggerIDs[30] = { 0 };
-//        for (int i = 0; i < 30; i++)
-//        {
-//            triggerIDs[i] = *reinterpret_cast<int*>(&fileBytes[offset + 4 + (i * 4)]);
-//        }
-//
-//        // Check for an invalid main character (0x00 means no character)
-//        if (mainCharacter == 0)
-//        {
-//            std::cout << "SpecialInteractionManager :: Error loading entry " << std::hex << x
-//                << " - main character ID is 0." << std::endl;
-//            continue;
-//        }
-//
-//        // Here you would create and store your special interaction entry.
-//        // For example, if you have a SpecialInteractionFramework class:
-//        SpecialInteractionFramework* newInteraction = new SpecialInteractionFramework();
-//        newInteraction->mainCharacter = mainCharacter;
-//        // Copy the trigger IDs into the framework's trigger list.
-//        for (int i = 0; i < 30; i++)
-//        {
-//            newInteraction->triggerList[i] = triggerIDs[i];
-//        }
-//        // Store the new interaction (assume specialInteractionList is a global vector).
-//        specialInteraction::specialInteractionList.push_back(newInteraction);
-//
-//        // Log the loaded entry.
-//        condition::sub_1412528C0("SpecialInteraction Entry at index %d: { mainCharacter = 0x%X, triggers = ",
-//            x, mainCharacter);
-//        for (int i = 0; i < 20; i++)
-//        {
-//            condition::sub_1412528C0("0x%X ", triggerIDs[i]);
-//        }
-//        condition::sub_1412528C0("}\n");
-//    }
-//}
+
+
+void SpecialInteractionManager::ReadTeamJutsuParam(std::string _file)
+{
+    std::vector<BYTE> fileBytes = condition::ReadAllBytes(_file);
+    size_t pos = 0;
+    size_t fileSize = fileBytes.size();
+
+    // Verify that the file contains at least 4 bytes for the trigger count.
+    if (fileSize < 4)
+    {
+        condition::sub_1412528C0("Error: File too small: %s\n", _file.c_str());
+        return;
+    }
+
+    // Read the trigger count from the first 4 bytes.
+    int triggerCount = *reinterpret_cast<int*>(&fileBytes[pos]);
+    pos += 4;
+    condition::sub_1412528C0("TeamJutsuEntry: trigger count = %d\n", triggerCount);
+
+    // Validate the trigger count.
+    if (triggerCount < 0 || pos + triggerCount * 4 > fileSize)
+    {
+        condition::sub_1412528C0("Error: Invalid trigger count (%d) in file %s\n", triggerCount, _file.c_str());
+        return;
+    }
+
+    // Create a new entry.
+    TeamJutsuEntry* newEntry = new TeamJutsuEntry();
+    newEntry->triggerList.reserve(triggerCount);
+    for (int i = 0; i < triggerCount; i++)
+    {
+        int triggerID = *reinterpret_cast<int*>(&fileBytes[pos + i * 4]);
+        if (triggerID != 0)
+            newEntry->triggerList.push_back(triggerID);
+    }
+    pos += triggerCount * 4;
+
+    // Store the new entry.
+    specialInteraction::teamJutsuList.push_back(newEntry);
+
+    // Log the loaded entry.
+    condition::sub_1412528C0("TeamJutsuEntry loaded: count = %d, triggers = ", triggerCount);
+    for (int trigger : newEntry->triggerList)
+    {
+        condition::sub_1412528C0("0x%X ", trigger);
+    }
+    condition::sub_1412528C0("\n");
+}
+
 
 void SpecialInteractionManager::ReadSpecialInteractionParam(std::string _file)
 {
@@ -279,6 +284,103 @@ __int64 __fastcall SpecialInteractionManager::SpecialInteractionUJChanger(__int6
 
     typedef signed __int64(__fastcall* sub_1409BB1B0)(__int64 a1);
     sub_1409BB1B0 sub_1409BB1B0_f = (sub_1409BB1B0)(SpecialInteractionManager::sub_1409BB1B0Adress);
+
+
+    int role = *(int*)(a1 + 0xCD0); // 0: leader, 1 or 2: support
+
+    if (role == 0) // Leader branch
+    {
+        int leaderID = *(int*)(a1 + 3684); // Leader character ID
+
+        int mainChar_player_side = *(int*)(a1 + 0xE60);
+        typedef signed __int64* (__fastcall* sub_140AC49A0)(unsigned int, unsigned int);
+        sub_140AC49A0 sub_140AC49A0_f = (sub_140AC49A0)(SpecialInteractionManager::sub_140AC49A0Adress); //0xAC49A0
+        __int64* support_ptr_1 = sub_140AC49A0_f(mainChar_player_side, 1);
+        __int64* support_ptr_2 = sub_140AC49A0_f(mainChar_player_side, 2);
+
+        // Retrieve support character IDs if available.
+        int support1ID = (support_ptr_1 != nullptr) ? *(int*)((BYTE*)support_ptr_1 + 0xE64) : 0;
+        int support2ID = (support_ptr_2 != nullptr) ? *(int*)((BYTE*)support_ptr_2 + 0xE64) : 0;
+
+        bool teamJutsuTriggered = false;
+        for (TeamJutsuEntry* entry : specialInteraction::teamJutsuList)
+        {
+            // First, ensure the trigger list contains the leader.
+            bool foundLeader = false;
+            for (int triggerID : entry->triggerList)
+            {
+                if (triggerID == leaderID)
+                {
+                    foundLeader = true;
+                    break;
+                }
+            }
+            if (!foundLeader)
+                continue;
+
+            // Then, check support conditions.
+            bool supportsCondition = false;
+            if (support1ID && support2ID)
+            {
+                bool foundSupport1 = false, foundSupport2 = false;
+                for (int triggerID : entry->triggerList)
+                {
+                    if (triggerID == support1ID)
+                        foundSupport1 = true;
+                    if (triggerID == support2ID)
+                        foundSupport2 = true;
+                }
+                supportsCondition = foundSupport1 && foundSupport2;
+            }
+            else if (support1ID)
+            {
+                bool foundSupport1 = false;
+                for (int triggerID : entry->triggerList)
+                {
+                    if (triggerID == support1ID)
+                    {
+                        foundSupport1 = true;
+                        break;
+                    }
+                }
+                supportsCondition = foundSupport1;
+            }
+            else if (support2ID)
+            {
+                bool foundSupport2 = false;
+                for (int triggerID : entry->triggerList)
+                {
+                    if (triggerID == support2ID)
+                    {
+                        foundSupport2 = true;
+                        break;
+                    }
+                }
+                supportsCondition = foundSupport2;
+            }
+
+            if (supportsCondition)
+            {
+                teamJutsuTriggered = true;
+                break;
+            }
+        }
+
+        if (teamJutsuTriggered)
+        {
+            *(int*)(a1 + 0xE78) = 5;
+        }
+        else
+        {
+            // Optionally revert or maintain the default value for leader if team jutsu not triggered.
+            // *(int*)(a1 + 0xE7C) = <default_value>;
+        }
+    }
+    else // Support branch: revert to default for supports.
+    {
+        *(int*)(a1 + 0xE78) = 0;
+    }
+
 
 
     // Initial conditions (recursive call, etc.)
@@ -657,3 +759,5 @@ __int64 __fastcall SpecialInteractionManager::AdjustSpecialInteractionValue(__in
 
     return adjustedValue;
 }
+
+

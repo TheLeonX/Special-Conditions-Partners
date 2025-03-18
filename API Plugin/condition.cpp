@@ -14,6 +14,7 @@ __int64 condition::sub_1405C3970Adress = 0;
 __int64 condition::sub_1405C7EC0Adress = 0;
 __int64 condition::sub_1405C8F00Adress = 0;
 __int64 condition::sub_140978B00Adress = 0;
+__int64 condition::hudon_address = 0;
 
 std::vector<BYTE> condition::ReadAllBytes(std::string _file)
 {
@@ -493,3 +494,13 @@ __int64 __fastcall condition::SkipIntroFunction(__int64 a1, int a2)
 	return 1i64;
 }
 
+__int64 __fastcall condition::sub_141075150(int* a1, int a2)
+{
+	__int64 result = 0; // Initialize result
+	if (a1[8])
+	{
+		if ((a2 & a1[7]) == 0)
+			return (*(__int64(__fastcall**)(int*))(*(__int64*)a1 + 24i64))(a1);
+	}
+	return result;
+}

@@ -19,6 +19,8 @@
 #include <cstdint>
 #include <thread>
 #include <chrono>
+#include "condition.h"
+#include "mem.h"
 using namespace std;
 
 
@@ -46,12 +48,12 @@ void me_SetPlayerVisibility(__int64 p, int cansee);
 void me_enable_dpad_animation(__int64 a1, int param2);
 void me_enable_control(__int64 a1, int enemy, int control);
 void me_disable_control(__int64 a1, int enemy, int control);
+void me_hud_control(__int64 a1, int param2);
 void me_change_dpad_charge(__int64 a1, int enemy, int arrow, float charge);
 void me_change_control_timed(__int64 a1, int enemy, int control, float time);
 
 bool ReplaceBytes(void* address, const uint8_t* newBytes, size_t size);
 
-int crc32(const std::string& input);
 
 __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 {
@@ -136,6 +138,9 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 		case 17:
 			me_change_dpad_charge(a1, param2, param3, param4);
 			break;
+		/*case 18:
+			me_hud_control(a1, param2);
+			break;*/
 		case 18:
 			me_character_param(a1);
 			break;
@@ -143,6 +148,18 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 	}
 
 	return 1;
+}
+void me_hud_control(__int64 a1, int param2) {
+	if (param2 == 1) {
+		std::cout << "No hud enabled!" << std::endl;
+		render::hudon = 1;
+	}
+	else {
+		std::cout << "No hud disabled!" << std::endl;
+		render::hudon = 2;
+	}
+	std::array<std::uint8_t, 1> hudon_bytes{ render::hudon };
+	util::memory::mem::write_bytes(condition::hudon_address, hudon_bytes);
 }
 void me_EnemyDispOff(__int64 a1)
 {
@@ -467,7 +484,7 @@ void me_test_switch_stage(__int64 function_param, __int64 param2, char* string_p
 
 	
 	if (param2 == 0) {
-		sub_1406F6830_f(v9, crc32((std::string)string_param));
+		sub_1406F6830_f(v9, plugin::api::crc32((std::string)string_param));
 	}
 	else {
 		sub_1406F6800_f(v9);
@@ -946,33 +963,7 @@ void me_character_param(__int64 char_p) {
 
 
 
-std::vector<int> crc32_table() {
-	std::vector<int> table(256);
-	for (int i = 0; i < 256; ++i) {
-		int crc = i << 24;
-		for (int j = 0; j < 8; ++j) {
-			if (crc & 0x80000000) {
-				crc = (crc << 1) ^ 0x04C11DB7;
-			}
-			else {
-				crc <<= 1;
-			}
-		}
-		table[i] = crc;
-	}
-	return table;
-}
 
-int crc32(const std::string& input) {
-	const auto table = crc32_table();
-	int crc = 0xFFFFFFFF;
-	for (unsigned char byte : input) {
-		int lookup_index = ((crc >> 24) ^ byte) & 0xFF;
-		crc = (crc << 8) ^ table[lookup_index];
-	}
-	crc = ~crc;
-	return crc;
-}
 
 bool ReplaceBytes(void* address, const uint8_t* newBytes, size_t size)
 {

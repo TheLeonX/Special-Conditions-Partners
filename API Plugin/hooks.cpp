@@ -381,6 +381,7 @@ void plugin::hookall() {
 		plugin::Hook((void*)(specialInteractionPRMFunctionAddress), SpecialInteractionManager::AdjustSpecialInteractionValue, 16);
 
 
+		SpecialInteractionManager::sub_140AC49A0Adress = PatternScan::Scan("83xxxx77xx83xxxx77xx4Cxxxxxxxxxxxx4Dxxxx74xx48xxxx49xxxxxx48xxxxxx48xxxxxx49xxxxE9xxxxxxxx33xxC383xxxx77xx83xxxx77xx4Cxxxxxxxxxxxx4Dxxxx74xx48xxxx49xxxxxxFFxx48xxxxxx48xxxxxx49xxxxE9xxxxxxxx33xxC3");
 
 	}
 
@@ -420,6 +421,8 @@ void plugin::hookall() {
 		util::memory::mem::write_bytes(conditionprmAddress2_4, conditionBytes2);
 	}
 
+	__int64 hudon_address1 = PatternScan::Scan("48xxxxxxxx48xxxxxxxx41xx48xxxxxx48xxxx49xxxx0Fxxxxxx4Cxxxx0Fxxxx24xx3Cxx74xxF6xxxx75xx33xx49xxxxxx49xxxx41xxxxxx48xxxxxxxx48xxxxxxxx48xxxxxx41xxC38Bxxxxxxxxxx");
+	condition::hudon_address = PatternScan::Scan("3C01", hudon_address1) + 1;
 }
 
 

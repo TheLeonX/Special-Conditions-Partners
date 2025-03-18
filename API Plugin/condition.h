@@ -12,6 +12,7 @@ inline __int64 sub_1405C3970Adress;
 inline __int64 sub_1405C7EC0Adress;
 inline __int64 sub_1405C8F00Adress;
 inline __int64 sub_140978B00Adress;
+inline __int64 hudon_address = 0;
 
 typedef __int64(__fastcall* gpi)(__int64 player, int charcode);
 inline gpi gpio;
@@ -30,7 +31,9 @@ struct PartnerFramework
 	__int64 address = 0;
 	int characode = 0;
 };
-
+namespace render {
+	inline int hudon = 1;
+}
 
 class condition {
 public:
@@ -44,6 +47,7 @@ public:
 	static __int64 sub_1405C7EC0Adress;
 	static __int64 sub_1405C8F00Adress;
 	static __int64 sub_140978B00Adress;
+	static __int64 hudon_address;
 	static void InitialScan();
 	static void ReadPartnerSlotParam(std::string file);
 	static __int64 CreatePartner(__int64 player, int characode);
@@ -58,4 +62,7 @@ public:
 	static void __fastcall _DeleteExceptionPtr(struct __ExceptionPtr* const a1);
 	static std::vector<BYTE> ReadAllBytes(std::string _file);
 	static __int64 __fastcall SkipIntroFunction(__int64 a1, int a2);
+	static __int64 __fastcall sub_141075150(int* a1, int a2);
+	static void __fastcall sub_1412547F0(const char* text);
+
 };

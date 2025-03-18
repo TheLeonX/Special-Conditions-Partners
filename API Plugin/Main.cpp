@@ -12,6 +12,8 @@
 #include "SpecialInteractingManager.h"
 #include "ConditionPrmManager.h"
 #include "PlAnmExpander.h"
+#include "mem.h"
+#include "BGMManager.cpp"
 using namespace std;
 std::string GetExeFileName()
 {
@@ -52,14 +54,14 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
     {
         TUJManager::ReadPairSpSkillManagerParam(e + "pairSpSkillManagerParam.xfbin");
     }
-    /*PlAnmExpander::ExpandStringArray();
+    PlAnmExpander::ExpandStringArray();
     std::ifstream af_planm(e + "plAnmExpanderParam.xfbin");
     af_planm.is_open();
     bool test_planm = af_planm.good();
     if (test_planm)
     {
         PlAnmExpander::ReadPlAnmExpander(e + "plAnmExpanderParam.xfbin");
-    }*/
+    }
 
     TUJManager::ExpandTeamUltimateArray();
 
@@ -71,12 +73,33 @@ void __stdcall InitializePlugin(__int64 a, std::vector<__int64> b)
         SpecialInteractionManager::ReadSpecialInteractionParam(e + "specialInteractionManager.xfbin");
     }
 
+    std::ifstream af_teamJutsu(e + "teamJutsuParam.xfbin");
+    af_teamJutsu.is_open();
+    bool test_teamJutsu = af_teamJutsu.good();
+    if (test_teamJutsu)
+    {
+        SpecialInteractionManager::ReadTeamJutsuParam(e + "teamJutsuParam.xfbin");
+    }
+
+
     std::ifstream af_conditionprm(e + "conditionprmManager.xfbin");
     af_conditionprm.is_open();
     bool test_conditionprm = af_conditionprm.good();
     if (test_conditionprm)
     {
         ConditionPrmManager::ReadConditionEntries(e + "conditionprmManager.xfbin");
+    }
+
+
+    //BGMs List
+
+    BGMExpander::ExpandBGMList();
+    std::ifstream af_bgmManagerParam(e + "bgmManagerParam.xfbin");
+    af_bgmManagerParam.is_open();
+    bool test_bgmManagerParam = af_bgmManagerParam.good();
+    if (test_bgmManagerParam)
+    {
+        BGMExpander::ReadBGMFile(e + "bgmManagerParam.xfbin");
     }
 }
 
@@ -110,7 +133,20 @@ void __stdcall InitializeLuaCommands(__int64 a, __int64 addCommandFunction)
 // This function will be called all the time while you're playing after the plugin has been initialized.
 void __stdcall GameLoop(__int64 a)
 {
+    //This if statement enables and disables the hud.
+    if ((GetAsyncKeyState(VK_F1) & 0x01)) {
+        if (render::hudon == 2) {
+            std::cout << "No hud enabled!" << std::endl;
+            render::hudon = 1;
+        }
+        else {
+            std::cout << "No hud disabled!" << std::endl;
+            render::hudon = 2;
+        }
+        std::array<std::uint8_t, 1> hudon_bytes{ render::hudon };
+        util::memory::mem::write_bytes(condition::hudon_address, hudon_bytes);
 
+    }
 }
 
 // This function is called when the API is loading a mod's files. Return true if the file was read by this plugin, otherwise return false for the API to manage the file.
@@ -128,4 +164,33 @@ __int64 plugin::api::RecalculateAddress(__int64 a)
 	else if (a > 0xEA7420) recalc += 0x400;
 
 	return recalc;
+}
+
+
+std::vector<int> plugin::api::crc32_table() {
+    std::vector<int> table(256);
+    for (int i = 0; i < 256; ++i) {
+        int crc = i << 24;
+        for (int j = 0; j < 8; ++j) {
+            if (crc & 0x80000000) {
+                crc = (crc << 1) ^ 0x04C11DB7;
+            }
+            else {
+                crc <<= 1;
+            }
+        }
+        table[i] = crc;
+    }
+    return table;
+}
+
+int plugin::api::crc32(const std::string& input) {
+    const auto table = plugin::api::crc32_table();
+    int crc = 0xFFFFFFFF;
+    for (unsigned char byte : input) {
+        int lookup_index = ((crc >> 24) ^ byte) & 0xFF;
+        crc = (crc << 8) ^ table[lookup_index];
+    }
+    crc = ~crc;
+    return crc;
 }

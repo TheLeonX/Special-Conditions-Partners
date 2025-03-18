@@ -14,6 +14,8 @@ namespace plugin
 	{
 	public:
 		static __int64 RecalculateAddress(__int64);
+		static std::vector<int> crc32_table();
+		static int crc32(const std::string& input);
 	};
 };
 

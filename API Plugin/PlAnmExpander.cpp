@@ -18,7 +18,6 @@ int PlAnmExpander::ORIGINAL_COUNT = 1009;                  // Оригинальное число
 int g_NewStringCountAllocated = PlAnmExpander::ORIGINAL_COUNT + 1000; // Всего слотов.
 int g_NewStringCount = PlAnmExpander::ORIGINAL_COUNT;         // Текущий активный счёт.
 PlAnmEntry* g_pNewEntryArray = nullptr;                      // Указатель на новый массив.
-uintptr_t OFF_STRINGS_ARRAY = 0x201E930;                     // Смещение оригинального массива от moduleBase.
 
 //------------------------------------------------------------------------------
 // Выделяет память в пределах ±2ГБ от указанного базового адреса.
@@ -235,6 +234,7 @@ void PlAnmExpander::PatchCountImmediate32(uint32_t oldCount, uint32_t newCount) 
 
 #include <windows.h>
 #include <psapi.h>
+#include "Offsets.h"
 
 // Checks if the byte(s) at addr represent one of the conditional jumps:
 // < (JL), <= (JLE), = (JE), >= (JGE), or > (JG).
@@ -375,7 +375,7 @@ void PlAnmExpander::ExpandStringArray() {
     // Получаем базовый адрес модуля.
     uintptr_t moduleBase = reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr));
     // Получаем оригинальный массив строк из EXE.
-    char** pOriginal = reinterpret_cast<char**>(moduleBase + OFF_STRINGS_ARRAY);
+    char** pOriginal = reinterpret_cast<char**>(moduleBase + offset::OFF_STRINGS_ARRAY);
     size_t newSize = g_NewStringCountAllocated * sizeof(PlAnmEntry);
 
     // Выделяем новый массив рядом с модулем, используя moduleBase в качестве базового адреса.
@@ -396,7 +396,7 @@ void PlAnmExpander::ExpandStringArray() {
     }
 
     // Патчим ссылки в коде, заменяя адрес оригинального массива на адрес нового.
-    PlAnmExpander::AutoPatchStringArrayReferences(moduleBase + OFF_STRINGS_ARRAY, reinterpret_cast<uintptr_t>(g_pNewEntryArray));
+    PlAnmExpander::AutoPatchStringArrayReferences(moduleBase + offset::OFF_STRINGS_ARRAY, reinterpret_cast<uintptr_t>(g_pNewEntryArray));
 
     condition::sub_1412528C0("Expanded string array: new array at 0x%p, count = %d (allocated %d slots)\n",
         g_pNewEntryArray, g_NewStringCount, g_NewStringCountAllocated);

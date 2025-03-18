@@ -41,6 +41,9 @@
     <ClCompile Include="PlAnmExpander.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BGMManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -77,6 +80,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlAnmExpander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BGMManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
