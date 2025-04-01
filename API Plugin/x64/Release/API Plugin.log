@@ -19,12 +19,12 @@ C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\PlAnm
 C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\PatternScan.cpp(22,17): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   MovesetPlus.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\format(42): warning STL4038: The contents of <format> are available only with C++20 or later.
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(161,51): warning C4838: Преобразование из "int" в "_Ty" требует сужающего преобразования.
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(161,51): warning C4838:         with
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(161,51): warning C4838:         [
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(161,51): warning C4838:             _Ty=uint8_t
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(161,51): warning C4838:         ]
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(576,23): warning C4244: =: преобразование "__int64" в "unsigned int", возможна потеря данных
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(162,51): warning C4838: Преобразование из "int" в "_Ty" требует сужающего преобразования.
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(162,51): warning C4838:         with
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(162,51): warning C4838:         [
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(162,51): warning C4838:             _Ty=uint8_t
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(162,51): warning C4838:         ]
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\MovesetPlus.cpp(577,23): warning C4244: =: преобразование "__int64" в "unsigned int", возможна потеря данных
   mem.h
   condition.cpp
 C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\condition.cpp(143,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
@@ -53,7 +53,7 @@ C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\Main.
   hooks.cpp
 C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(345,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
 C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(351,23): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(434,10): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\hooks.cpp(444,10): warning C4018: <: несоответствие типов со знаком и без знака
   ConditionPrmManager.cpp
   BGMManager.cpp
 C:\Users\ARDOR\Desktop\C++ Projects\Special-Conditions-Partners\API Plugin\BGMManager.cpp(239,24): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных

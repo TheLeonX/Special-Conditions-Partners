@@ -160,7 +160,7 @@ public:
     static int GetCurrentBGMCount() {
         int count = 0;
         while (count < BGMExpander::g_NewBGMCountAllocated) {
-            if (BGMExpander::g_pNewBGMArray[count].crc32 == 0xFFFFFFFF)
+            if (BGMExpander::g_pNewBGMArray[count].crc32 == 0)
                 break;
             count++;
         }

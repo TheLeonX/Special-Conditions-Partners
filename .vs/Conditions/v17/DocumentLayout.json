@@ -7,16 +7,24 @@
       "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\BGMManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\hooks.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\hooks.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\condition.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\condition.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Offsets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\Offsets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\MovesetPlus.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\MovesetPlus.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\hooks.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\hooks.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Offsets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\Offsets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -33,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\ConditionPrmManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\ConditionPrmManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\MovesetPlus.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|solutionrelative:API Plugin\\MovesetPlus.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0BA65DB4-F64C-469A-B708-6D722D7D60F4}|API Plugin\\API Plugin.vcxproj|C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Main.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -62,24 +66,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "Common.h",
+              "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Common.h",
+              "RelativeDocumentMoniker": "API Plugin\\Common.h",
+              "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Common.h",
+              "RelativeToolTip": "API Plugin\\Common.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-19T07:26:51.079Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "condition.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\condition.cpp",
               "RelativeDocumentMoniker": "API Plugin\\condition.cpp",
               "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\condition.cpp",
               "RelativeToolTip": "API Plugin\\condition.cpp",
-              "ViewState": "AgIAAOIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAANwBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-18T14:37:26.277Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-18T14:37:26.277Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "ConditionPrmManager.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\ConditionPrmManager.h",
               "RelativeDocumentMoniker": "API Plugin\\ConditionPrmManager.h",
@@ -91,7 +106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "ConditionPrmManager.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\ConditionPrmManager.cpp",
               "RelativeDocumentMoniker": "API Plugin\\ConditionPrmManager.cpp",
@@ -103,7 +118,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Main.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Main.h",
               "RelativeDocumentMoniker": "API Plugin\\Main.h",
@@ -115,7 +130,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "condition.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\condition.h",
               "RelativeDocumentMoniker": "API Plugin\\condition.h",
@@ -127,7 +142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "PlAnmExpander.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\PlAnmExpander.h",
               "RelativeDocumentMoniker": "API Plugin\\PlAnmExpander.h",
@@ -139,19 +154,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "hooks.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\hooks.cpp",
               "RelativeDocumentMoniker": "API Plugin\\hooks.cpp",
               "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\hooks.cpp",
               "RelativeToolTip": "API Plugin\\hooks.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAI0BAAAAAAAAAAAAAKEBAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-18T14:22:04.762Z"
+              "WhenOpened": "2025-03-18T14:22:04.762Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Main.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Main.cpp",
               "RelativeDocumentMoniker": "API Plugin\\Main.cpp",
@@ -163,31 +179,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "MovesetPlus.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\MovesetPlus.cpp",
               "RelativeDocumentMoniker": "API Plugin\\MovesetPlus.cpp",
               "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\MovesetPlus.cpp",
               "RelativeToolTip": "API Plugin\\MovesetPlus.cpp",
-              "ViewState": "AgIAAM8BAAAAAAAAAAAiwOYBAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAJYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-18T14:11:14.319Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Offsets.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Offsets.h",
               "RelativeDocumentMoniker": "API Plugin\\Offsets.h",
               "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\Offsets.h",
               "RelativeToolTip": "API Plugin\\Offsets.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-18T13:55:49.515Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "PlAnmExpander.cpp",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\PlAnmExpander.cpp",
               "RelativeDocumentMoniker": "API Plugin\\PlAnmExpander.cpp",
@@ -199,7 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "BGMManager.h",
               "DocumentMoniker": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\BGMManager.h",
               "RelativeDocumentMoniker": "API Plugin\\BGMManager.h",
@@ -217,7 +233,7 @@
               "RelativeDocumentMoniker": "API Plugin\\BGMManager.cpp",
               "ToolTip": "C:\\Users\\ARDOR\\Desktop\\C\u002B\u002B Projects\\Special-Conditions-Partners\\API Plugin\\BGMManager.cpp",
               "RelativeToolTip": "API Plugin\\BGMManager.cpp",
-              "ViewState": "AgIAAPgAAAAAAAAAAAAAAAoBAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAgwKIAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-18T13:55:10.352Z",
               "EditorCaption": ""

@@ -420,9 +420,19 @@ void plugin::hookall() {
 		util::memory::mem::write_bytes(conditionprmAddress2_3, conditionBytes2);
 		util::memory::mem::write_bytes(conditionprmAddress2_4, conditionBytes2);
 	}
-
+	// Hide HUD
 	__int64 hudon_address1 = PatternScan::Scan("48xxxxxxxx48xxxxxxxx41xx48xxxxxx48xxxx49xxxx0Fxxxxxx4Cxxxx0Fxxxx24xx3Cxx74xxF6xxxx75xx33xx49xxxxxx49xxxx41xxxxxx48xxxxxxxx48xxxxxxxx48xxxxxx41xxC38Bxxxxxxxxxx");
 	condition::hudon_address = PatternScan::Scan("3C01", hudon_address1) + 1;
+
+
+	// Enable Monitor on stages
+	__int64 monitor_address = PatternScan::Scan("48xxxx48xxxxxx48xxxxxx48xxxxxx5541xx41xx41xx41xx48xxxxxxxxxxxx48xxxxxxxxxxxx0Fxxxxxx0Fxxxxxx48xxxxxxxxxxxx48xxxx48xxxxxxxxxxxx4Cxxxx48xxxxxxxx48xxxxxxxx48xxxxFFxxxx904Cxxxxxxxxxxxx");
+	__int64 monitor_address2 = PatternScan::Scan("C7xxxxxxxxxx00000000", monitor_address) + 6;
+	const std::array<std::uint8_t, 4> monitor_bytes{ 0x01, 0x00, 0x00, 0x00 };
+	util::memory::mem::write_bytes(monitor_address2, monitor_bytes);
+
+
+
 }
 
 

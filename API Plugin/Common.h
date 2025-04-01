@@ -13,7 +13,11 @@ public:
 	{
 		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
 	}
-
+	static __int64* GetQwordPtr(__int64 qw)
+	{
+		__int64 qwr = qw - 0x140000000;
+		return (__int64*)(plugin::moduleBase + qwr);
+	}
 	static __int64 GetQword(__int64 qw)
 	{
 		__int64 qwr = qw - 0x140000000;

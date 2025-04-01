@@ -149,6 +149,7 @@ __int64 __fastcall MovesetPlus::meTest(__int64 a1, __int64 a2)
 
 	return 1;
 }
+
 void me_hud_control(__int64 a1, int param2) {
 	if (param2 == 1) {
 		std::cout << "No hud enabled!" << std::endl;
